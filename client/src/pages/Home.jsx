@@ -2,7 +2,7 @@ import React from "react";
 import HeroBlock from "../components/HeroBlock";
 import AboutBlock from "../components/AboutBlock";
 import EventsBlock from "../components/EventsBlock";
-import Chapters from "../pages/chapters";
+import Chapters from "./chapters";
 import GalleryBlock from "../components/GalleryBlock";
 import Footer from "../components/Footer";
 import CSInfoBlock from "../components/CSInfoBlock";
