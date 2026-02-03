@@ -7,7 +7,7 @@ import Navbar from "./components/Navbar";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Chapters from "./pages/chapters.jsx";
+import Chapters from "./pages/Chapters.jsx";
 import ComputerSociety from "./pages/ComputerSociety";
 import WIE from "./pages/WIE";
 import MTT from "./pages/MTT";
