@@ -4,14 +4,15 @@ const eventSchema = new mongoose.Schema(
   {
     title: String,
     description: String,
-    image: String,
-    showInHero: {
-      type: Boolean,
-      default: true
-    }
+    date: String,
+    category: {
+      type: String,
+      enum: ["general", "cs", "wie", "mtt"],
+      default: "general"
+    },
+    image: String
   },
-  { timestamps: true } // 🔥 NEW event = HERO FIRST
+  { timestamps: true }
 );
 
 export default mongoose.model("Event", eventSchema);
-  

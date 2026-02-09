@@ -1,15 +1,11 @@
 import express from "express";
-import { protect } from "../middleware/auth.middleware.js";
-import {
-  addMember,
-  getTeam,
-  deleteMember
-} from "../controllers/team.controller.js";
+import upload from "../middleware/upload.middleware.js";
+import { getTeam, addMember, deleteMember } from "../controllers/team.controller.js";
 
 const router = express.Router();
 
 router.get("/", getTeam);
-router.post("/", protect, addMember);
-router.delete("/:id", protect, deleteMember);
+router.post("/", upload.single("photo"), addMember);
+router.delete("/:id", deleteMember);
 
 export default router;
