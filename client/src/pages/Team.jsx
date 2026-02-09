@@ -5,6 +5,7 @@ import logo from "../assets/vgu-logo.png";
 import image001 from "../assets/image001.png";
 import image002 from "../assets/image002.png";
 import image003 from "../assets/image003.png";
+import image004 from "../assets/image004.png";
 import image005 from "../assets/image005.png";
 import image006 from "../assets/image006.png";
 import image1 from "../assets/image1.png";
@@ -17,6 +18,7 @@ import image6 from "../assets/image6.png";
 import image7 from "../assets/image7.png";
 import image8 from "../assets/image8.png";
 import image9 from "../assets/image9.png";
+import image10 from "../assets/image10.png";
 import image11 from "../assets/image11.png";
 
 export default function Team() {
@@ -53,7 +55,7 @@ export default function Team() {
           },
           {
             name: "Mayuri Katara (Assistant Professor)",
-            img: logo,
+            img: image004,
             email: "mayuree.katara@vgu.ac.in",
             phone: "9587087442",
             linkedin: "https://www.linkedin.com/in/mayuri-katara-6850a0192/?originalSubdomain=in",
@@ -160,9 +162,9 @@ export default function Team() {
           { name: "Anushka Thakur", img: image6, email: "anushkaaathakur@gmail.com", phone: "7277251151", linkedin: "https://www.linkedin.com/in/anushka-thakur-013781286" },
           { name: "Jijo Vinod", img: image7, email: "vinodjijo12@gmail.com", phone: "8306202833", linkedin: "https://www.linkedin.com/in/jijov" },
           { name: "Arman Hussain", img: image8, email: "armanhussain681@gmail.com", phone: "9057212878", linkedin: "https://www.linkedin.com/in/arman-husain-cse" },
-          { name: "Dishant Choudhary", img: image9, email: "dishant@vgu.ac.in", phone: "9166270003", linkedin: "https://www.linkedin.com/in/dishant-choudhary" },
-          { name: "Ghanshyam Suthar", img: logo, email: "ghanshyam@vgu.ac.in", phone: "9166270003", linkedin: "https://www.linkedin.com/in/ghanshyam-suthar-952ab0373" },
-          { name: "Shreeansh Ayush", img: image11, email: "shreeanshayush@gmail.com", phone: "8809076286", linkedin: "https://www.linkedin.com/in/shreeansh-ayush-429452281" },
+          { name: "Dishant Choudhary", img: image9, email: "dishantchoudhary1218@gmail.com ", phone: "8306443235", linkedin: "https://www.linkedin.com/in/dishant-choudhary" },
+          { name: "Ghanshyam Suthar", img: image10, email: "ghanshyamsuthar1289@gmail.com", phone: "9166270003", linkedin: "https://www.linkedin.com/in/ghanshyam-suthar-952ab0373" },
+          { name: "Shreeansh Ayush", img: image11, email: "@gmail.com", phone: "8809076286", linkedin: "https://www.linkedin.com/in/shreeansh-ayush-429452281" },
         ].map((m, i) => (
           <div key={i} className="relative bg-blue-50 dark:bg-white/5 border dark:border-white/10 rounded-2xl p-6 text-center hover:-translate-y-2 transition shadow-sm hover:shadow-xl">
 
