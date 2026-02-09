@@ -7,7 +7,7 @@ export default function About() {
     <>
       <div
         className="
-          pt-0 min-h-screen px-6 md:px-10
+          mt-10 min-h-screen px-6 md:px-10
           bg-white text-gray-900
           dark:bg-[#020617] dark:text-white
           transition-colors duration-300

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { FaLinkedin, FaEnvelope, FaPhoneAlt } from "react-icons/fa";
 
 // Images
@@ -7,12 +8,32 @@ import image0 from "../assets/image005.png";    // Muquaddar Ali
 import image5 from "../assets/image5.png";      // Abhishek Prasad
 import image6 from "../assets/image6.png";      // Anushka Thakur
 
-// Events data
-import { eventsData } from "../data/eventsData";
-
 export default function MTT() {
+
+  // ✅ EVENTS STATE (API se aayega)
+  const [events, setEvents] = useState([]);
+
+  // ✅ Fetch events from backend (Auto update every 5 sec)
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/events");
+        setEvents(res.data);
+      } catch (error) {
+        console.log("Events fetch error:", error);
+      }
+    };
+
+    fetchEvents(); // first time load
+
+    // 🔁 auto update every 5 sec
+    const interval = setInterval(fetchEvents, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="min-h-screen pt-0 px-6 bg-white text-gray-900 dark:bg-[#020617] dark:text-white transition-colors duration-300">
+    <div className="min-h-screen pt-10 px-6 bg-white text-gray-900 dark:bg-[#020617] dark:text-white transition-colors duration-300">
 
       {/* ================= HEADER ================= */}
       <div className="text-center mb-20">
@@ -167,19 +188,21 @@ export default function MTT() {
       </h2>
 
       <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-28">
-        {eventsData
+        {events
           .filter((e) => e.category === "mtt")
-          .map((e, i) => (
+          .map((e) => (
             <div
-              key={i}
+              key={e._id}
               className="group rounded-xl p-6 cursor-pointer bg-blue-50 border border-blue-100 dark:bg-white/5 dark:border-white/10 transition-all duration-300 hover:-translate-y-3 hover:scale-[1.03]"
             >
               <h3 className="text-xl font-semibold text-blue-700 dark:text-blue-400">
                 {e.title}
               </h3>
+
               <p className="mt-2 text-blue-700/70 dark:text-gray-400">
-                {e.desc}
+                {e.description}
               </p>
+
               <span className="inline-block mt-4 px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400">
                 {e.tag}
               </span>

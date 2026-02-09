@@ -10,48 +10,36 @@ export default function Admin() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-        {/* 🔥 HERO SECTION CARD */}
         <div
           onClick={() => navigate("/admin-secret-vgu/hero")}
           className="cursor-pointer bg-black/40 hover:bg-black/60 transition rounded-xl p-6 shadow-lg"
         >
           <h2 className="text-2xl font-semibold mb-2">Hero Section</h2>
-          <p className="text-gray-300 text-sm">
-            Upload, delete & reorder hero images
-          </p>
+          <p className="text-gray-300 text-sm">Upload, delete & reorder hero images</p>
         </div>
 
-        {/* 🖼️ GALLERY SECTION CARD */}
         <div
           onClick={() => navigate("/admin-secret-vgu/gallery")}
           className="cursor-pointer bg-black/40 hover:bg-black/60 transition rounded-xl p-6 shadow-lg"
         >
           <h2 className="text-2xl font-semibold mb-2">Gallery Section</h2>
-          <p className="text-gray-300 text-sm">
-            Upload & manage gallery photos
-          </p>
+          <p className="text-gray-300 text-sm">Upload & manage gallery photos</p>
         </div>
 
-        {/* 📅 EVENTS SECTION CARD (future ready) */}
         <div
           onClick={() => navigate("/admin-secret-vgu/events")}
           className="cursor-pointer bg-black/40 hover:bg-black/60 transition rounded-xl p-6 shadow-lg"
         >
           <h2 className="text-2xl font-semibold mb-2">Events Section</h2>
-          <p className="text-gray-300 text-sm">
-            Create & manage events (Activities + Chapters)
-          </p>
+          <p className="text-gray-300 text-sm">Create & manage events</p>
         </div>
 
-        {/* 👥 TEAM SECTION CARD (future ready) */}
         <div
           onClick={() => navigate("/admin-secret-vgu/team")}
           className="cursor-pointer bg-black/40 hover:bg-black/60 transition rounded-xl p-6 shadow-lg"
         >
           <h2 className="text-2xl font-semibold mb-2">Team Section</h2>
-          <p className="text-gray-300 text-sm">
-            Add, update & remove team members
-          </p>
+          <p className="text-gray-300 text-sm">Add & manage team members</p>
         </div>
 
       </div>

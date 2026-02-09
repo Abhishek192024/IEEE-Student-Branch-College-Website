@@ -24,11 +24,14 @@ export default function Home() {
       </section>
 
       {/* ABOUT */}
-      <section className="py-16 sm:py-24 bg-gray-50 dark:bg-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ABOUT */}
+      <section className="w-full bg-gray-50 dark:bg-white/5">
+        <div className="w-full">
           <AboutBlock />
         </div>
       </section>
+
+
 
 
 

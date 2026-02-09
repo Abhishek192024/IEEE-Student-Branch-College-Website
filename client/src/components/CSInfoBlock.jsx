@@ -5,13 +5,12 @@ import CountUp from "react-countup";
 /**
  * CSInfoBlock
  * ----------------------------------
- * IEEE CSE Section
+ * IEEE Student Branch Section
  * Light Mode  → white + blue cards
  * Dark Mode   → deep blue bg + glass cards
  * Hover       → lift + glow
  */
 export default function CSInfoBlock() {
-
   const sectionRef = useRef(null);
 
   const isInView = useInView(sectionRef, {
@@ -21,24 +20,24 @@ export default function CSInfoBlock() {
 
   const stats = [
     {
-      value: 500,
-      label: "Members",
-      desc: "Active student members across CS domains",
-    },
-    {
-      value: 50,
-      label: "Technical Events",
-      desc: "Workshops, hackathons & seminars",
-    },
-    {
-      value: 4,
-      label: "Active Societies",
-      desc: "Specialized IEEE technical groups",
+      value: 12,
+      label: "Student Members",
+      desc: "Active IEEE student members across domains",
     },
     {
       value: 10,
-      label: "Mentors",
-      desc: "Industry & academic experts",
+      label: "Events & Workshops",
+      desc: "Seminars, talks, workshops & competitions",
+    },
+    {
+      value: 3,
+      label: "Technical Chapters",
+      desc: "Societies like CS, WIE, MTT and more",
+    },
+    {
+      value: 10,
+      label: "Speakers & Mentors",
+      desc: "Industry, research and academic experts",
     },
   ];
 
@@ -64,7 +63,8 @@ export default function CSInfoBlock() {
       {/* Decorative glow */}
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-500/10 blur-[160px] rounded-full pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-6 text-center">
+      {/* ✅ FULL WIDTH (no max-width, no padding) */}
+      <div className="relative w-full text-center">
 
         {/* ================= HEADING ================= */}
         <motion.h1
@@ -77,7 +77,7 @@ export default function CSInfoBlock() {
             dark:text-white
           "
         >
-          Computer Science & Engineering
+          IEEE Student Branch
         </motion.h1>
 
         <motion.p
@@ -86,7 +86,7 @@ export default function CSInfoBlock() {
           transition={{ delay: 0.15 }}
           className="mb-3 text-blue-600 dark:text-gray-400"
         >
-          IEEE Student Branch
+          Vivekananda Global University (VGU)
         </motion.p>
 
         <motion.p
@@ -95,7 +95,7 @@ export default function CSInfoBlock() {
           transition={{ delay: 0.25 }}
           className="text-xl font-medium mb-6 text-blue-700 dark:text-blue-400"
         >
-          Advancing computing technology for the benefit of humanity.
+          Advancing technology for the benefit of humanity.
         </motion.p>
 
         <motion.p
@@ -103,22 +103,29 @@ export default function CSInfoBlock() {
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ delay: 0.4 }}
           className="
-            max-w-3xl mx-auto mb-24 leading-relaxed
+            max-w-5xl mx-auto mb-24 leading-relaxed
             text-blue-700/80
             dark:text-gray-400
           "
         >
-          As part of the IEEE Student Branch, the Computer Science & Engineering
-          community promotes innovation in software development, artificial
-          intelligence, data science, cybersecurity, and emerging technologies.
-          Our goal is to empower students with technical excellence, leadership
-          skills, and a strong professional network while contributing to IEEE’s
-          global mission of advancing technology for humanity.
+          IEEE (Institute of Electrical and Electronics Engineers) is the world’s
+          largest professional technical organization dedicated to advancing
+          technology for humanity. The IEEE Student Branch at VGU provides a
+          platform for students to learn, innovate, collaborate, and lead through
+          technical activities, professional development programs, workshops,
+          seminars, expert talks, and competitions.
+          <br /><br />
+          Through IEEE societies and chapters, students explore fields like
+          Computer Science, Microwave Theory & Techniques (MTT), Women in
+          Engineering (WIE), and other emerging technologies. Our mission is to
+          develop strong technical skills, research culture, leadership qualities,
+          and global professional exposure.
         </motion.p>
 
         {/* ================= STAT CARDS ================= */}
+        {/* ✅ Cards ko center me rakha but boundary remove */}
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto px-6"
           style={{ perspective: "1400px" }}
         >
           {stats.map((item, index) => (
@@ -142,7 +149,7 @@ export default function CSInfoBlock() {
                 shadow-[0_10px_30px_rgba(59,130,246,0.15)]
                 hover:shadow-[0_25px_70px_rgba(59,130,246,0.35)]
 
-                /* DARK MODE CARD (FIXED – NO WHITE) */
+                /* DARK MODE CARD */
                 dark:bg-gradient-to-br
                 dark:from-[#0b1224]
                 dark:to-[#020617]

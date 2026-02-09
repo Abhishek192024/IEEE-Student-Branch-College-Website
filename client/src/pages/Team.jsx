@@ -21,7 +21,7 @@ import image11 from "../assets/image11.png";
 
 export default function Team() {
   return (
-    <div className="min-h-screen pt-0 px-6 bg-white text-gray-900 dark:bg-[#020617] dark:text-white transition-colors duration-300">
+    <div className="min-h-screen mt-10 pt-0 px-6 bg-white text-gray-900 dark:bg-[#020617] dark:text-white transition-colors duration-300">
 
       {/* ================= FACULTY ADVISORS ================= */}
       <h2 className="text-4xl font-bold text-center mb-12 text-blue-800 dark:text-white">

@@ -2,15 +2,21 @@ import mongoose from "mongoose";
 
 const eventSchema = new mongoose.Schema(
   {
-    title: String,
-    description: String,
-    date: String,
+    title: { type: String, required: true },
+    desc: { type: String, required: true },
+    tag: { type: String, required: true },
     category: {
       type: String,
-      enum: ["general", "cs", "wie", "mtt"],
-      default: "general"
+      enum: ["computer", "wie", "mtt"],
+      required: true,
     },
-    image: String
+
+    // 🔥 NEW FIELD
+    color: {
+      type: String,
+      enum: ["blue", "red", "green", "yellow"],
+      default: "blue",
+    },
   },
   { timestamps: true }
 );

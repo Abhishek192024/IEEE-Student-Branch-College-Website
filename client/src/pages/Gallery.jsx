@@ -13,7 +13,7 @@ export default function Gallery() {
 
   return (
     <section className="px-8 py-16 text-white">
-      <h1 className="text-4xl mb-10 text-center">Gallery</h1>
+      <h1 className="text-4xl mb-10 text-center font-bold">Gallery</h1>
 
       <div className="grid grid-cols-3 gap-8">
         {gallery.map((g) => (

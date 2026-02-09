@@ -14,10 +14,12 @@ import Events from "./pages/Events";
 import Gallery from "./pages/Gallery";
 import Team from "./pages/Team";
 
+import AdminLogin from "./pages/AdminLogin";
 import Admin from "./pages/Admin";
 import AdminHero from "./pages/AdminHero";
 import AdminGallery from "./pages/AdminGallery";
-import AdminLogin from "./pages/AdminLogin";
+import AdminEvents from "./pages/AdminEvents";
+import AdminTeam from "./pages/AdminTeam";
 
 import AdminRoute from "./components/AdminRoute";
 
@@ -29,7 +31,7 @@ function App() {
 
         <main className="pt-20">
           <Routes>
-            {/* 🌍 PUBLIC ROUTES */}
+            {/* PUBLIC */}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/chapters" element={<Chapters />} />
@@ -40,10 +42,10 @@ function App() {
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/team" element={<Team />} />
 
-            {/* 🔐 ADMIN LOGIN */}
+            {/* ADMIN LOGIN */}
             <Route path="/admin-secret-vgu" element={<AdminLogin />} />
 
-            {/* 🔒 ADMIN DASHBOARD */}
+            {/* ADMIN PROTECTED */}
             <Route
               path="/admin-secret-vgu/dashboard"
               element={
@@ -53,7 +55,6 @@ function App() {
               }
             />
 
-            {/* 🔒 HERO MANAGEMENT */}
             <Route
               path="/admin-secret-vgu/hero"
               element={
@@ -63,12 +64,29 @@ function App() {
               }
             />
 
-            {/* 🔒 GALLERY MANAGEMENT */}
             <Route
               path="/admin-secret-vgu/gallery"
               element={
                 <AdminRoute>
                   <AdminGallery />
+                </AdminRoute>
+              }
+            />
+
+            <Route
+              path="/admin-secret-vgu/events"
+              element={
+                <AdminRoute>
+                  <AdminEvents />
+                </AdminRoute>
+              }
+            />
+
+            <Route
+              path="/admin-secret-vgu/team"
+              element={
+                <AdminRoute>
+                  <AdminTeam />
                 </AdminRoute>
               }
             />

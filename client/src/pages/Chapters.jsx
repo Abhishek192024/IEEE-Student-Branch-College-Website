@@ -34,7 +34,7 @@ export default function Chapters() {
     <>
       <div
         className="
-          pt-0 min-h-screen px-6
+          mt-10 min-h-screen px-6
           bg-white text-gray-900
           dark:bg-[#020617] dark:text-white
           transition-colors duration-300
