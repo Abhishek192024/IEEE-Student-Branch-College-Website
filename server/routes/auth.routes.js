@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/login", adminLogin);
 
-// ✅ NEW: verify route (admin verify)
+// ✅ verify route (admin verify)
 router.get("/verify", protect, adminOnly, verifyAdmin);
 
 export default router;
