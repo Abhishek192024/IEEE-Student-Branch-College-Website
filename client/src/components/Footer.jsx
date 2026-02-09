@@ -153,20 +153,10 @@ export default function Footer() {
         "
       >
         <p>
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; © {new Date().getFullYear()} IEEE VGU CSE Branch. All rights reserved.
+          © {new Date().getFullYear()} IEEE VGU CSE Branch. All rights reserved.
         </p>
 
-        {/* ADMIN LOGIN */}
-        <NavLink
-          to="/admin"
-          className="
-            text-xs transition
-            text-blue-600 dark:text-gray-500
-            hover:text-indigo-500
-          "
-        >
-          Admin Login
-        </NavLink>
+        
       </div>
     </footer>
   );

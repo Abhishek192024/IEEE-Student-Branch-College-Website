@@ -1,10 +1,17 @@
+// import express from "express";
+// import { adminLogin } from "../controllers/auth.controller.js";
+
+// const router = express.Router();
+
+// router.post("/login", adminLogin);
+
+// export default router;
+
 import express from "express";
-import { loginAdmin } from "../controllers/auth.controller.js";
+import { adminLogin } from "../controllers/auth.controller.js";
 
 const router = express.Router();
 
-// Admin Login
-// POST http://localhost:5000/api/auth/login
-router.post("/login", loginAdmin);
+router.post("/login", adminLogin);
 
 export default router;

@@ -1,27 +1,24 @@
-import React, { useState } from "react";
-import api from "../services/api";
+import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Admin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const login = async () => {
-    try {
-      await api.post("/auth/login", { email, password });
-      alert("Login Success");
-    } catch {
-      alert("Invalid credentials");
-    }
-  };
-
   return (
-    <div style={{ padding: "40px" }}>
-      <h2>Admin Login</h2>
-      <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
-      <br />
-      <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-      <br />
-      <button onClick={login}>Login</button>
+    <div className="min-h-screen p-10 text-white">
+      <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <Link
+          to="/admin-secret-vgu/hero"
+          className="bg-black/40 p-6 rounded-xl hover:bg-black/60 transition"
+        >
+          <h2 className="text-xl font-semibold">Hero Section</h2>
+          <p className="text-sm text-gray-400 mt-2">
+            Upload, delete & reorder hero images
+          </p>
+        </Link>
+
+      </div>
     </div>
   );
 }
