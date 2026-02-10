@@ -17,7 +17,7 @@ export default function ComputerSociety() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get("https://vgu-ieee-student-branch.onrender.com/api/events");
+        const res = await axios.get("https://vgu-ieee-student-branch.onrender.com/events");
         setEvents(res.data);
       } catch (error) {
         console.log("Events fetch error:", error);

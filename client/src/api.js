@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "/api", // ✅ Render deploy + same domain
+  baseURL: "https://vgu-ieee-student-branch.onrender.com/api",
   withCredentials: true,
 });
 

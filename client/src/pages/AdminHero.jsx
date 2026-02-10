@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API = "https://vgu-ieee-student-branch.onrender.com/api/hero"; // ✅ API URL
+const API = "https://vgu-ieee-student-branch.onrender.com/hero"; // ✅ API URL
 const IMG = "https://vgu-ieee-student-branch.onrender.com";
 
 export default function AdminHero() {
