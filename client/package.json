@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^1.7.2",
     "framer-motion": "^12.28.1",
+    "ieee-vgu-backend": "file:..",
     "react": "^18.3.1",
     "react-countup": "^6.5.3",
     "react-dom": "^18.3.1",
