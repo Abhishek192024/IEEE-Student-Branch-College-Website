@@ -4,9 +4,27 @@ import { useNavigate } from "react-router-dom";
 export default function Admin() {
   const navigate = useNavigate();
 
+  // ✅ LOGOUT FUNCTION
+  const handleLogout = () => {
+    localStorage.removeItem("adminToken"); // session end
+    navigate("/admin-secret-vgu"); // back to login
+  };
+
   return (
     <div className="min-h-screen text-white px-8 py-10">
-      <h1 className="text-4xl font-bold mb-10">Admin Dashboard</h1>
+
+      {/* TOP BAR */}
+      <div className="flex items-center justify-between mb-10">
+        <h1 className="text-4xl font-bold">Admin Dashboard</h1>
+
+        {/* ✅ LOGOUT BUTTON */}
+        <button
+          onClick={handleLogout}
+          className="px-5 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition"
+        >
+          Logout
+        </button>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 

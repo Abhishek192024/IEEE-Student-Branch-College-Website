@@ -5,11 +5,11 @@ import { FaLinkedin, FaEnvelope, FaPhoneAlt } from "react-icons/fa";
 // Images
 import image01 from "../assets/image002.png";   // Surendra Yadav
 import image0 from "../assets/image005.png";    // Muquaddar Ali
+import image006 from "../assets/image006.png";  // Narayan Vyas
 import image5 from "../assets/image5.png";      // Abhishek Prasad
 import image6 from "../assets/image6.png";      // Anushka Thakur
 
 export default function MTT() {
-
   // ✅ EVENTS STATE (API se aayega)
   const [events, setEvents] = useState([]);
 
@@ -75,7 +75,8 @@ export default function MTT() {
         Faculty Advisors
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-5xl mx-auto mb-28">
+      {/* ✅ FIXED: 3 Faculty ek hi row me */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 max-w-6xl mx-auto mb-28">
         {[
           {
             name: "Prof.(Dr.) Surendra Yadav",
@@ -92,6 +93,14 @@ export default function MTT() {
             email: "muquaddar.ali@vgu.ac.in",
             phone: "99024238334",
             linkedin: "https://www.linkedin.com/in/dr-muquaddar-ali/",
+          },
+          {
+            name: "Narayan Vyas (Assistant Professor)",
+            role: "Faculty Advisor",
+            img: image006,
+            email: "narayan.vyas@vgu.ac.in",
+            phone: "8560014421",
+            linkedin: "https://www.linkedin.com/in/narayanvyas87/?originalSubdomain=in",
           },
         ].map((m, i) => (
           <div
@@ -183,6 +192,7 @@ export default function MTT() {
       </div>
 
       {/* ================= MTT EVENTS ================= */}
+      {/* ================= MTT EVENTS ================= */}
       <h2 className="text-3xl font-bold text-center mb-14 text-blue-800 dark:text-white">
         MTT Events
       </h2>
@@ -190,24 +200,79 @@ export default function MTT() {
       <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-28">
         {events
           .filter((e) => e.category === "mtt")
-          .map((e) => (
-            <div
-              key={e._id}
-              className="group rounded-xl p-6 cursor-pointer bg-blue-50 border border-blue-100 dark:bg-white/5 dark:border-white/10 transition-all duration-300 hover:-translate-y-3 hover:scale-[1.03]"
-            >
-              <h3 className="text-xl font-semibold text-blue-700 dark:text-blue-400">
-                {e.title}
-              </h3>
+          .map((e) => {
+            const styles = {
+              blue: {
+                card: "bg-blue-50 border-blue-100 dark:bg-white/5 dark:border-white/10",
+                title: "text-blue-700 dark:text-blue-400 group-hover:text-blue-500",
+                desc: "text-blue-700/70 dark:text-gray-400 group-hover:text-blue-700 dark:group-hover:text-gray-300",
+                tag: "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400 group-hover:bg-blue-500 group-hover:text-white",
+                shadow: "hover:shadow-[0_20px_50px_rgba(59,130,246,0.25)]",
+              },
+              purple: {
+                card: "bg-purple-50 border-purple-100 dark:bg-white/5 dark:border-white/10",
+                title: "text-purple-700 dark:text-purple-400 group-hover:text-purple-500",
+                desc: "text-purple-700/70 dark:text-gray-400 group-hover:text-purple-700 dark:group-hover:text-gray-300",
+                tag: "bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-400 group-hover:bg-purple-500 group-hover:text-white",
+                shadow: "hover:shadow-[0_20px_50px_rgba(168,85,247,0.25)]",
+              },
+              green: {
+                card: "bg-green-50 border-green-100 dark:bg-white/5 dark:border-white/10",
+                title: "text-green-700 dark:text-green-400 group-hover:text-green-500",
+                desc: "text-green-700/70 dark:text-gray-400 group-hover:text-green-700 dark:group-hover:text-gray-300",
+                tag: "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-400 group-hover:bg-green-500 group-hover:text-white",
+                shadow: "hover:shadow-[0_20px_50px_rgba(34,197,94,0.25)]",
+              },
+              rose: {
+                card: "bg-rose-50 border-rose-100 dark:bg-white/5 dark:border-white/10",
+                title: "text-rose-700 dark:text-rose-400 group-hover:text-rose-500",
+                desc: "text-rose-700/70 dark:text-gray-400 group-hover:text-rose-700 dark:group-hover:text-gray-300",
+                tag: "bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400 group-hover:bg-rose-500 group-hover:text-white",
+                shadow: "hover:shadow-[0_20px_50px_rgba(244,63,94,0.25)]",
+              },
+              emerald: {
+                card: "bg-emerald-50 border-emerald-100 dark:bg-white/5 dark:border-white/10",
+                title: "text-emerald-700 dark:text-emerald-400 group-hover:text-emerald-500",
+                desc: "text-emerald-700/70 dark:text-gray-400 group-hover:text-emerald-700 dark:group-hover:text-gray-300",
+                tag: "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white",
+                shadow: "hover:shadow-[0_20px_50px_rgba(16,185,129,0.25)]",
+              },
+            };
 
-              <p className="mt-2 text-blue-700/70 dark:text-gray-400">
-                {e.description}
-              </p>
+            // ✅ default blue
+            const c = styles[e.color] || styles.blue;
 
-              <span className="inline-block mt-4 px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400">
-                {e.tag}
-              </span>
-            </div>
-          ))}
+            return (
+              <div
+                key={e._id}
+                className={`
+                  group rounded-xl p-6 cursor-pointer border
+                  transition-all duration-300 ease-out
+                  hover:-translate-y-3 hover:scale-[1.03]
+                  ${c.card}
+                  ${c.shadow}
+                `}
+              >
+                <h3 className={`text-xl font-semibold transition-all duration-300 ${c.title}`}>
+                  {e.title}
+                </h3>
+
+                <p className={`mt-2 transition-all duration-300 ${c.desc}`}>
+                  {e.description}
+                </p>
+
+                <span
+                  className={`
+                    inline-block mt-4 px-3 py-1 text-xs font-semibold rounded-full
+                    transition-all duration-300
+                    ${c.tag}
+                  `}
+                >
+                  {e.tag}
+                </span>
+              </div>
+            );
+          })}
       </div>
 
     </div>

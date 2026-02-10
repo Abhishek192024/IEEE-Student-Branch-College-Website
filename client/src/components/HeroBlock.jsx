@@ -9,29 +9,22 @@ export default function HeroBlock() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
 
-  // ✅ First load pe animation off
   const [firstLoad, setFirstLoad] = useState(true);
 
-  // FETCH HERO IMAGES
   useEffect(() => {
     axios.get(`${API}/api/hero`).then((res) => {
       setImages(res.data);
-
-      // ✅ 0th image pehle se hi rahe
       setIndex(0);
       setFirstLoad(true);
     });
   }, []);
 
-  // AUTO SLIDE
   useEffect(() => {
     if (!images.length) return;
 
     const timer = setInterval(() => {
       setDirection(1);
       setIndex((i) => (i + 1) % images.length);
-
-      // ✅ 1st slide ke baad animation ON
       setFirstLoad(false);
     }, 5000);
 
@@ -52,15 +45,13 @@ export default function HeroBlock() {
             animate={{ x: 0 }}
             exit={{ x: direction > 0 ? "-100%" : "100%" }}
             transition={{ duration: 1 }}
+
+            // ✅ STRETCH FIX
             className="absolute inset-0 bg-cover bg-center"
 
-            // ✅ HOVER ANIMATION: image light/bright
             whileHover={{
               filter: "brightness(1.15)",
               scale: 1.01,
-            }}
-            transition={{
-              duration: 0.4,
             }}
             style={{
               backgroundImage: `url(${API}${images[index].image})`,
@@ -69,7 +60,7 @@ export default function HeroBlock() {
         </AnimatePresence>
 
         {/* overlay */}
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-black/20" />
 
         {/* content */}
         <div className="absolute bottom-20 w-full text-center z-10">

@@ -5,7 +5,7 @@ export default function Footer() {
   const quickLinks = [
     { name: "Home", link: "/" },
     { name: "About", link: "/about" },
-    { name: "Societies", link: "/societies" },
+    { name: "Chapters", link: "/chapters" },
     { name: "Events", link: "/events" },
     { name: "Gallery", link: "/gallery" },
   ];
