@@ -17,7 +17,7 @@ export default function MTT() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get("https://vgu-ieee-student-branch.onrender.com/events");
+        const res = await axios.get("https://vguieee-student-branch-college-1.onrender.com/api/events");
         setEvents(res.data);
       } catch (error) {
         console.log("Events fetch error:", error);

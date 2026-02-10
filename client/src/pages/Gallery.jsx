@@ -7,7 +7,7 @@ export default function Gallery() {
 
   useEffect(() => {
     axios
-      .get("https://vgu-ieee-student-branch.onrender.com/gallery")
+      .get("https://vguieee-student-branch-college-1.onrender.com/api/gallery")
       .then((res) => setGallery(res.data));
   }, []);
 

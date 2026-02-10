@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
 
-const API = "https://vgu-ieee-student-branch.onrender.com"; // ✅ API URL
+const API = "https://vguieee-student-branch-college-1.onrender.com"; // ✅ backend URL
 
 export default function AdminRoute({ children }) {
   const [loading, setLoading] = useState(true);

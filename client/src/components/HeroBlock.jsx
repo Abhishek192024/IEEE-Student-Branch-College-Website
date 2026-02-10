@@ -1,24 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import axios from "axios";
-
-const API = "https://vgu-ieee-student-branch.onrender.com"; // ✅ API URL
+import api from "../api"; // ✅ axios instance (baseURL: "/api")
 
 export default function HeroBlock() {
   const [images, setImages] = useState([]);
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
-
   const [firstLoad, setFirstLoad] = useState(true);
 
+  // ✅ BASE URL FOR IMAGES
+  // Local dev -> backend is 5000
+  // Render deploy -> same domain, so empty
+  const IMG_BASE =
+    import.meta.env.MODE === "development" ? "https://vguieee-student-branch-college-1.onrender.com" : "/uploads/";
+
+  // ✅ FETCH HERO IMAGES
   useEffect(() => {
-    axios.get(`${API}/api/hero`).then((res) => {
-      setImages(res.data);
-      setIndex(0);
-      setFirstLoad(true);
-    });
+    const fetchHeroes = async () => {
+      try {
+        // ✅ baseURL = "/api"
+        // so request becomes: /api/hero
+        const res = await api.get("/hero");
+
+        const data = Array.isArray(res.data) ? res.data : [];
+
+        // ✅ sort by order
+        data.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+        setImages(data);
+        setIndex(0);
+        setFirstLoad(true);
+      } catch (error) {
+        console.log("❌ Hero fetch error:", error.response?.data || error.message);
+        setImages([]);
+      }
+    };
+
+    fetchHeroes();
   }, []);
 
+  // ✅ AUTO SLIDE
   useEffect(() => {
     if (!images.length) return;
 
@@ -36,7 +57,6 @@ export default function HeroBlock() {
   return (
     <section className="relative mt-8 mb-16 px-4">
       <div className="relative h-[80vh] max-w-7xl mx-auto rounded-2xl overflow-hidden">
-
         <AnimatePresence custom={direction} initial={false}>
           <motion.div
             key={index}
@@ -45,16 +65,14 @@ export default function HeroBlock() {
             animate={{ x: 0 }}
             exit={{ x: direction > 0 ? "-100%" : "100%" }}
             transition={{ duration: 1 }}
-
-            // ✅ STRETCH FIX
             className="absolute inset-0 bg-cover bg-center"
-
             whileHover={{
               filter: "brightness(1.15)",
               scale: 1.01,
             }}
             style={{
-              backgroundImage: `url(${API}${images[index].image})`,
+              // ✅ FINAL FIX: local + render both
+              backgroundImage: `url(${IMG_BASE}${images[index].image})`,
             }}
           />
         </AnimatePresence>

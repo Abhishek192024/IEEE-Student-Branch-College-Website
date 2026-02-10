@@ -6,7 +6,7 @@ export default function Events() {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    axios.get("https://vgu-ieee-student-branch.onrender.com/events")
+    axios.get("https://vguieee-student-branch-college-1.onrender.com/api/events")
       .then(res => setEvents(res.data));
   }, []);
 

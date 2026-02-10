@@ -12,7 +12,7 @@ export default function AdminLogin() {
 
     try {
       const res = await axios.post(
-        "https://vgu-ieee-student-branch.onrender.com/auth/login",
+        "https://vguieee-student-branch-college-1.onrender.com/api/auth/login",
         { email, password }
       );
 

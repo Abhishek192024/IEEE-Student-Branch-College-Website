@@ -17,38 +17,34 @@ connectDB();
 
 const app = express();
 
-// ✅ ESM me __dirname fix
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ✅ Render / Production me PORT automatic hota hai
 const PORT = process.env.PORT || 5000;
 
-
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-const corsOptions = {
-  origin: [
-    "https://vgu-ieee-student-branch.onrender.com"
-  ],
-  credentials: true,
-};
-app.use(cors(corsOptions));
-
+// ✅ CORS FIX
+app.use(
+  cors({
+    origin: 
+      "https://vguieee-student-branch-college-1.onrender.com", // ✅ frontend URL
+    credentials: true,
+  })
+);
 
 // ✅ uploads folder serve
-app.use ("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// ✅ API routes
+// ✅ API routes (IMPORTANT: /api prefix)
 app.use("/api/hero", heroRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/team", teamRoutes);
 
-// ==============================
 // ✅ FRONTEND SERVE (Vite dist)
-// ==============================
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
 app.get("*", (req, res) => {
