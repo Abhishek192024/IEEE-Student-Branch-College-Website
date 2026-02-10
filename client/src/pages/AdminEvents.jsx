@@ -24,7 +24,7 @@ export default function AdminEvents() {
   const fetchEvents = async () => {
     try {
       const { data } = await axios.get(
-        "https://vguieee-student-branch-college-website.onrender.com/api/events"
+        "https://vgu-ieee-student-branch.onrender.com/api/events",
       );
       setEvents(data);
     } catch (err) {
@@ -45,7 +45,7 @@ export default function AdminEvents() {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/events",
+        "https://vgu-ieee-student-branch.onrender.com/api/events",
         {
           title,
           desc,
@@ -73,7 +73,7 @@ export default function AdminEvents() {
   const deleteEvent = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/events/${id}`,
+        `https://vgu-ieee-student-branch.onrender.com/api/events/${id}`,
         authConfig
       );
       fetchEvents();

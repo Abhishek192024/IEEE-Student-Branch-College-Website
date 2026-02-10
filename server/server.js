@@ -30,7 +30,7 @@ app.use(express.json());
 const corsOptions = {
   origin: [
     "http://localhost:5173",
-    "https://vguieee-student-branch-college-website.onrender.com",
+    "https://vgu-ieee-student-branch.onrender.com"
   ],
   credentials: true,
 };

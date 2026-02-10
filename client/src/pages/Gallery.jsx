@@ -7,7 +7,7 @@ export default function Gallery() {
 
   useEffect(() => {
     axios
-      .get("https://vguieee-student-branch-college-website.onrender.com/api/gallery")
+      .get("https://vgu-ieee-student-branch.onrender.com/api/gallery")
       .then((res) => setGallery(res.data));
   }, []);
 
@@ -24,7 +24,7 @@ export default function Gallery() {
             className="relative overflow-hidden rounded-xl shadow-xl group"
           >
             <img
-              src={`https://vguieee-student-branch-college-website.onrender.com${g.image}`}
+              src={`https://vgu-ieee-student-branch.onrender.com${g.image}`}
               className="h-64 w-full object-cover"
             />
 
