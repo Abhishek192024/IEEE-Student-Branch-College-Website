@@ -1,18 +1,22 @@
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import Admin from "../models/Admin.model.js";
 
 export const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const admin = await Admin.findOne({ email });
+    // ✅ email ko normalize kar do
+    const admin = await Admin.findOne({ email: email.toLowerCase().trim() });
 
     if (!admin) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // ⚠️ If you use bcrypt, replace this line
-    if (admin.password !== password) {
+    // ✅ bcrypt password compare
+    const isMatch = await bcrypt.compare(password, admin.password);
+
+    if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
@@ -28,6 +32,7 @@ export const adminLogin = async (req, res) => {
       role: "admin",
     });
   } catch (error) {
+    console.log("Admin login error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
