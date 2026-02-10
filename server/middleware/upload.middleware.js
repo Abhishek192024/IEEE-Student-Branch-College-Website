@@ -2,31 +2,28 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
-/**
- * Utility: ensure folder exists
- */
+// ✅ Ensure folder exists
 const ensureDir = (dir) => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
 };
 
-/**
- * Multer storage
- * - Automatically decides folder based on route
- * - /api/hero      -> uploads/hero
- * - /api/gallery   -> uploads/gallery
- * - future (events/team) -> uploads/others
- */
+// ✅ Multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    let folder = "uploads/others";
+    // Base folder: server/uploads/others
+    let folder = path.join(process.cwd(), "server", "uploads", "others");
 
-    // 👇 route-based folder selection (NO HERO BREAK)
+    // ✅ Route-based folder selection
     if (req.baseUrl.includes("hero")) {
-      folder = "uploads/hero";
+      folder = path.join(process.cwd(), "server", "uploads", "hero");
     } else if (req.baseUrl.includes("gallery")) {
-      folder = "uploads/gallery";
+      folder = path.join(process.cwd(), "server", "uploads", "gallery");
+    } else if (req.baseUrl.includes("events")) {
+      folder = path.join(process.cwd(), "server", "uploads", "events");
+    } else if (req.baseUrl.includes("team")) {
+      folder = path.join(process.cwd(), "server", "uploads", "team");
     }
 
     ensureDir(folder);
@@ -44,24 +41,22 @@ const storage = multer.diskStorage({
   },
 });
 
-/**
- * File filter: only images allowed
- */
+// ✅ Allow only image files
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/")) {
     cb(null, true);
   } else {
-    cb(new Error("Only image files are allowed"), false);
+    cb(new Error("Only image files are allowed!"), false);
   }
 };
 
-/**
- * Multer instance
- * 👉 DEFAULT EXPORT (important, warna crash hoga)
- */
+// ✅ Multer instance
 const upload = multer({
   storage,
   fileFilter,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB
+  },
 });
 
 export default upload;

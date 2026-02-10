@@ -24,16 +24,21 @@ const __dirname = path.dirname(__filename);
 // ✅ Render / Production me PORT automatic hota hai
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+
 app.use(express.json());
 
 const corsOptions = {
-  origin: process.env.CLIENT_URL || "https://vguieee-student-branch-college-website.onrender.com",
-  optionsSuccessStatus: 200,
+  origin: [
+    "http://localhost:5173",
+    "https://vguieee-student-branch-college-website.onrender.com",
+  ],
+  credentials: true,
 };
+app.use(cors(corsOptions));
+
 
 // ✅ uploads folder serve
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use ("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ✅ API routes
 app.use("/api/hero", heroRoutes);
