@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://vguieee-student-branch-college-website.onrender.com/api"
+  baseURL: "https://vgu-ieee-student-branch.onrender.com/api", // ✅ API URL
 });
