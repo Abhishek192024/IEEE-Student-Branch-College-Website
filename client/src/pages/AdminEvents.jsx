@@ -24,7 +24,7 @@ export default function AdminEvents() {
   const fetchEvents = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5000/api/events"
+        "https://vguieee-student-branch-college-website.onrender.com/api/events"
       );
       setEvents(data);
     } catch (err) {

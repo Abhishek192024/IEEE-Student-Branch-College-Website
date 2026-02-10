@@ -16,7 +16,7 @@ export default function WIE() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/events");
+        const res = await axios.get("https://vguieee-student-branch-college-website.onrender.com/api/events");
         setEvents(res.data);
       } catch (error) {
         console.log("Events fetch error:", error);

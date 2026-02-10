@@ -27,6 +27,11 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+const corsOptions = {
+  origin: process.env.CLIENT_URL || "https://vguieee-student-branch-college-website.onrender.com",
+  optionsSuccessStatus: 200,
+};
+
 // ✅ uploads folder serve
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
