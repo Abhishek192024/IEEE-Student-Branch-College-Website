@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import api from "../api"; // ✅ axios instance (baseURL: "/api")
+import api from "../api"; // axios instance (baseURL: "/api")
 
 export default function HeroBlock() {
   const [images, setImages] = useState([]);
@@ -8,23 +8,17 @@ export default function HeroBlock() {
   const [direction, setDirection] = useState(1);
   const [firstLoad, setFirstLoad] = useState(true);
 
-  // ✅ BASE URL FOR IMAGES
-  // Local dev -> backend is 5000
-  // Render deploy -> same domain, so empty
+  // ✅ Local dev: images backend se aayengi (5000)
+  // ✅ Render: same domain, so empty
   const IMG_BASE =
-    import.meta.env.MODE === "development" ? "https://vguieee-student-branch-college-1.onrender.com" : "/uploads/";
+    import.meta.env.MODE === "development" ? "http://localhost:5000" : "";
 
-  // ✅ FETCH HERO IMAGES
   useEffect(() => {
     const fetchHeroes = async () => {
       try {
-        // ✅ baseURL = "/api"
-        // so request becomes: /api/hero
         const res = await api.get("/hero");
 
         const data = Array.isArray(res.data) ? res.data : [];
-
-        // ✅ sort by order
         data.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
         setImages(data);
@@ -39,7 +33,6 @@ export default function HeroBlock() {
     fetchHeroes();
   }, []);
 
-  // ✅ AUTO SLIDE
   useEffect(() => {
     if (!images.length) return;
 
@@ -71,16 +64,14 @@ export default function HeroBlock() {
               scale: 1.01,
             }}
             style={{
-              // ✅ FINAL FIX: local + render both
+              // ✅ FIXED IMAGE URL
               backgroundImage: `url(${IMG_BASE}${images[index].image})`,
             }}
           />
         </AnimatePresence>
 
-        {/* overlay */}
         <div className="absolute inset-0 bg-black/20" />
 
-        {/* content */}
         <div className="absolute bottom-20 w-full text-center z-10">
           <h1 className="text-6xl font-extrabold">
             <span className="text-blue-400">IEEE</span>{" "}
@@ -88,7 +79,6 @@ export default function HeroBlock() {
           </h1>
         </div>
 
-        {/* LEFT ARROW */}
         <button
           onClick={() => {
             setFirstLoad(false);
@@ -107,7 +97,6 @@ export default function HeroBlock() {
           </span>
         </button>
 
-        {/* RIGHT ARROW */}
         <button
           onClick={() => {
             setFirstLoad(false);
@@ -126,7 +115,6 @@ export default function HeroBlock() {
           </span>
         </button>
 
-        {/* dots */}
         <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-20">
           {images.map((_, i) => (
             <button
