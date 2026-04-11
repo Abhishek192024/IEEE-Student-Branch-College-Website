@@ -10,13 +10,17 @@ const eventSchema = new mongoose.Schema(
       enum: ["computer", "wie", "mtt"],
       required: true,
     },
-
-    // 🔥 NEW FIELD
+    // 🔥 ENUM UPDATED (frontend options ke hisaab se)
     color: {
       type: String,
-      enum: ["blue", "red", "green", "yellow"],
+      enum: ["blue", "red", "green", "yellow", "rose", "purple", "emerald"],
       default: "blue",
     },
+
+    // 🔥 NEW FIELDS FOR FILES
+    poster: { type: String },       // Poster image ka path
+    pdfReport: { type: String },    // PDF file ka path
+    images: [{ type: String }],     // Multiple images ka array
   },
   { timestamps: true }
 );

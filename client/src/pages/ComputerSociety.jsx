@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaLinkedin, FaEnvelope, FaPhoneAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom"; // 🔥 1. Yahan useNavigate import kiya
 
 // Images
 import image01 from "../assets/image001.png"; // Baldev Singh
@@ -9,6 +10,7 @@ import image03 from "../assets/image2.png";   // Lakshya Sharma
 import image5 from "../assets/image11.png";   // Shreeansh Ayush
 
 export default function ComputerSociety() {
+  const navigate = useNavigate(); // 🔥 2. Yahan navigate banaya redirect karne ke liye
 
   // ✅ EVENTS STATE (API se aayega)
   const [events, setEvents] = useState([]);
@@ -17,7 +19,7 @@ export default function ComputerSociety() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get("https://vguieee-student-branch-college-1.onrender.com/api/events");
+        const res = await axios.get("http://localhost:5000/api/events");
         setEvents(res.data);
       } catch (error) {
         console.log("Events fetch error:", error);
@@ -234,6 +236,7 @@ export default function ComputerSociety() {
             return (
               <div
                 key={e._id}
+                onClick={() => navigate(`/event/${e._id}`)} // 🔥 3. Yahan click event add kiya
                 className={`
                   group rounded-xl p-6 cursor-pointer border
                   transition-all duration-300 ease-out
@@ -263,7 +266,6 @@ export default function ComputerSociety() {
             );
           })}
       </div>
-
 
     </div>
   );

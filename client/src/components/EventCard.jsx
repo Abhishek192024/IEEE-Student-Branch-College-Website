@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // 🔥 NEW: Routing ke liye import
 
 export default function EventCard({ e }) {
+  const navigate = useNavigate(); // 🔥 NEW: Navigate function initialize kiya
+
   const styles = {
     blue: {
       card: "bg-blue-50 border-blue-100 dark:bg-white/5 dark:border-white/10",
@@ -43,6 +46,7 @@ export default function EventCard({ e }) {
 
   return (
     <div
+      onClick={() => navigate(`/event/${e._id}`)} // 🔥 NEW: Isse click karne par details page khulega
       className={`
         group rounded-xl p-6 cursor-pointer
         border
@@ -57,7 +61,7 @@ export default function EventCard({ e }) {
       </h3>
 
       <p className={`mt-2 transition-all duration-300 ${c.desc}`}>
-        {e.desc}
+        {e.description || e.desc} 
       </p>
 
       <span

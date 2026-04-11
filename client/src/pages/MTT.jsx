@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaLinkedin, FaEnvelope, FaPhoneAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom"; // 🔥 1. Yahan import kiya
 
 // Images
 import image01 from "../assets/image002.png";   // Surendra Yadav
@@ -10,6 +11,8 @@ import image5 from "../assets/image5.png";      // Abhishek Prasad
 import image6 from "../assets/image6.png";      // Anushka Thakur
 
 export default function MTT() {
+  const navigate = useNavigate(); // 🔥 2. Yahan initialize kiya
+
   // ✅ EVENTS STATE (API se aayega)
   const [events, setEvents] = useState([]);
 
@@ -17,7 +20,7 @@ export default function MTT() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get("https://vguieee-student-branch-college-1.onrender.com/api/events");
+        const res = await axios.get("http://localhost:5000/api/events");
         setEvents(res.data);
       } catch (error) {
         console.log("Events fetch error:", error);
@@ -192,7 +195,6 @@ export default function MTT() {
       </div>
 
       {/* ================= MTT EVENTS ================= */}
-      {/* ================= MTT EVENTS ================= */}
       <h2 className="text-3xl font-bold text-center mb-14 text-blue-800 dark:text-white">
         MTT Events
       </h2>
@@ -245,6 +247,7 @@ export default function MTT() {
             return (
               <div
                 key={e._id}
+                onClick={() => navigate(`/event/${e._id}`)} // 🔥 3. Yahan click event lagaya
                 className={`
                   group rounded-xl p-6 cursor-pointer border
                   transition-all duration-300 ease-out

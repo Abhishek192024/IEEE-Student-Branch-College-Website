@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API = "https://vguieee-student-branch-college-1.onrender.com/api/hero"; // ✅ API URL
-const IMG = "https://vguieee-student-branch-college-1.onrender.com";
+const API = "http://localhost:5000/api/hero"; // ✅ API URL
+const IMG = "http://localhost:5000";
 
 export default function AdminHero() {
   const [file, setFile] = useState(null);

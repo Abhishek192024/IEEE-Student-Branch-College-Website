@@ -3,7 +3,8 @@ import React, { createContext, useEffect, useState } from "react";
 export const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState("dark");
+  // 🔥 Yahan "dark" ko hata kar "light" kar do
+  const [theme, setTheme] = useState("light");
 
   useEffect(() => {
     const root = document.documentElement;

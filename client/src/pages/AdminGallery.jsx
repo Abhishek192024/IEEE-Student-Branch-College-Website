@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API = "https://vguieee-student-branch-college-1.onrender.com"; // ✅ API URL
+const API = "http://localhost:5000"; // ✅ API URL
 
 export default function AdminGallery() {
   const [file, setFile] = useState(null);

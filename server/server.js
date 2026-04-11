@@ -26,18 +26,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ✅ CORS FIX
+// ✅ CORS FIX
 app.use(
   cors({
-    origin: 
-      "https://vguieee-student-branch-college-1.onrender.com", // ✅ frontend URL
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
 
-// ✅ uploads folder serve
+// ✅ uploads folder serve (Yehi important hai files show karne ke liye)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// ✅ API routes (IMPORTANT: /api prefix)
+// ✅ API routes
 app.use("/api/hero", heroRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/gallery", galleryRoutes);

@@ -1,6 +1,11 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { fileURLToPath } from "url";
+
+// ✅ __dirname ko ES Modules mein use karne ka tareeka
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // ✅ Ensure folder exists
 const ensureDir = (dir) => {
@@ -12,18 +17,17 @@ const ensureDir = (dir) => {
 // ✅ Multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // Base folder: server/uploads/others
-    let folder = path.join(process.cwd(), "server", "uploads", "others");
+    // 🔥 Ab folder hamesha exact sahi jagah banega: server/uploads/
+    let folder = path.join(__dirname, "..", "uploads", "others");
 
-    // ✅ Route-based folder selection
     if (req.baseUrl.includes("hero")) {
-      folder = path.join(process.cwd(), "server", "uploads", "hero");
+      folder = path.join(__dirname, "..", "uploads", "hero");
     } else if (req.baseUrl.includes("gallery")) {
-      folder = path.join(process.cwd(), "server", "uploads", "gallery");
+      folder = path.join(__dirname, "..", "uploads", "gallery");
     } else if (req.baseUrl.includes("events")) {
-      folder = path.join(process.cwd(), "server", "uploads", "events");
+      folder = path.join(__dirname, "..", "uploads", "events");
     } else if (req.baseUrl.includes("team")) {
-      folder = path.join(process.cwd(), "server", "uploads", "team");
+      folder = path.join(__dirname, "..", "uploads", "team");
     }
 
     ensureDir(folder);
@@ -41,22 +45,19 @@ const storage = multer.diskStorage({
   },
 });
 
-// ✅ Allow only image files
+// ✅ Allow image and pdf files
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image/")) {
+  if (file.mimetype.startsWith("image/") || file.mimetype === "application/pdf") {
     cb(null, true);
   } else {
-    cb(new Error("Only image files are allowed!"), false);
+    cb(new Error("Only images and PDF files are allowed!"), false);
   }
 };
 
-// ✅ Multer instance
 const upload = multer({
   storage,
   fileFilter,
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB
-  },
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
 });
 
 export default upload;
