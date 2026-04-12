@@ -60,5 +60,5 @@ Project start karein:
 Bash
 npm run dev
 
-Developed by: Abhishek Kumar Chaurasiya
+Developed by: Abhishek Kumar 
 Institution: Vivekananda Global University, Jaipur
