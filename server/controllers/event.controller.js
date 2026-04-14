@@ -1,6 +1,5 @@
 import Event from "../models/Event.model.js";
-import fs from "fs";
-import path from "path";
+import imagekit from "../config/imagekit.js"; // 🔥 NAYA: ImageKit import kiya
 
 /* GET ALL EVENTS */
 export const getEvents = async (req, res) => {
@@ -12,7 +11,7 @@ export const getEvents = async (req, res) => {
   }
 };
 
-/* GET SINGLE EVENT (🔥 NEW) */
+/* GET SINGLE EVENT */
 export const getSingleEvent = async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
@@ -32,16 +31,39 @@ export const createEvent = async (req, res) => {
     let pdfUrl = "";
     let imagesArr = [];
 
-    // ✅ Files handling
+    // ✅ ImageKit pe files upload karna
     if (req.files) {
+      // 1. Upload Poster
       if (req.files.poster) {
-        posterUrl = `/uploads/events/${req.files.poster[0].filename}`;
+        const posterRes = await imagekit.upload({
+          file: req.files.poster[0].buffer,
+          fileName: `poster-${Date.now()}-${req.files.poster[0].originalname}`,
+          folder: "/IEEE-VGU/Events"
+        });
+        posterUrl = posterRes.url;
       }
+      
+      // 2. Upload PDF Report
       if (req.files.pdfReport) {
-        pdfUrl = `/uploads/events/${req.files.pdfReport[0].filename}`;
+        const pdfRes = await imagekit.upload({
+          file: req.files.pdfReport[0].buffer,
+          fileName: `pdf-${Date.now()}-${req.files.pdfReport[0].originalname}`,
+          folder: "/IEEE-VGU/Events"
+        });
+        pdfUrl = pdfRes.url;
       }
+      
+      // 3. Upload Multiple Images (Gallery inside event)
       if (req.files.images) {
-        imagesArr = req.files.images.map(file => `/uploads/events/${file.filename}`);
+        const uploadPromises = req.files.images.map(file => 
+          imagekit.upload({
+            file: file.buffer,
+            fileName: `img-${Date.now()}-${file.originalname}`,
+            folder: "/IEEE-VGU/Events"
+          })
+        );
+        const imgResults = await Promise.all(uploadPromises); // Sab ek sath upload honge
+        imagesArr = imgResults.map(res => res.url);
       }
     }
 
@@ -83,22 +105,11 @@ export const deleteEvent = async (req, res) => {
     const event = await Event.findById(req.params.id);
     if (!event) return res.status(404).json({ message: "Event not found" });
 
-    // ✅ Server se physical file delete karne ka function
-    const deleteFile = (filePath) => {
-      if (filePath) {
-        const fullPath = path.join(process.cwd(), "server", filePath);
-        if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
-      }
-    };
-
-    deleteFile(event.poster);
-    deleteFile(event.pdfReport);
-    if (event.images && event.images.length > 0) {
-      event.images.forEach(img => deleteFile(img));
-    }
+    // ✅ fs.unlink hata diya gaya hai kyunki file local me nahi cloud me hai.
+    // Database se event delete ho jayega. (ImageKit me file safe rahegi, manual delete ya API se baad me handle kar sakte hain).
 
     await Event.findByIdAndDelete(req.params.id);
-    res.json({ message: "Event and associated files deleted" });
+    res.json({ message: "Event deleted from Database" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting event", error });
   }

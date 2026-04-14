@@ -11,11 +11,10 @@ export default function Navbar() {
 
   useEffect(() => {
     if (theme === "dark") {
-      toggleTheme(); 
+      toggleTheme();
     }
-  }, []); 
+  }, []);
 
-  /* close dropdown on outside click */
   useEffect(() => {
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -26,54 +25,51 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // 🔥 UPDATED: Dynamic Link Class with Animated Underline Logic
   const linkClass = ({ isActive }) =>
-    `relative py-2 text-sm font-semibold transition-all duration-300 group
-     ${isActive 
-        ? "text-blue-500" 
-        : theme === "dark" ? "text-gray-300 hover:text-white" : "text-blue-900 hover:text-blue-500"
+    `relative py-2 text-[16px] lg:text-[17px] font-bold tracking-wide transition-all duration-300 group
+     ${isActive
+       ? "text-blue-600 dark:text-blue-400"
+       : theme === "dark" ? "text-gray-300 hover:text-white" : "text-slate-800 hover:text-blue-700"
      }`;
 
-  // Common Underline Component to avoid repetition
   const Underline = ({ isActive }) => (
-    <span className={`absolute bottom-0 left-0 h-[2px] bg-blue-500 transition-all duration-300 
+    <span className={`absolute bottom-0 left-0 h-[3px] rounded-t-md bg-blue-600 dark:bg-blue-500 transition-all duration-300
       ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}>
     </span>
   );
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 backdrop-blur-md transition-all duration-500
+      className={`w-full z-40 backdrop-blur-md transition-all duration-500
         ${theme === "dark"
           ? "bg-[#020617]/90 border-b border-white/10"
           : "bg-white/90 border-b border-gray-200 shadow-sm"}
       `}
     >
-      <div className="max-w-7xl mx-auto h-20 px-6 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto h-20 px-4 sm:px-6 flex items-center justify-between">
 
-        {/* LOGO */}
-        <NavLink to="/" className="flex items-center gap-3 hover:scale-105 transition-transform duration-300">
+        {/* 🔥 FIX: Animation हटाया, Gap कम किया (gap-2.5) और Alignment सही की */}
+        <NavLink to="/" className="flex items-center gap-2.5">
           <img
             src="/assets/ieee-vgu-logo.png"
             alt="IEEE VGU"
-            className="h-10"
+            className="h-14 lg:h-16 object-contain" 
           />
-          <div className="hidden sm:block leading-tight">
-            <p className="text-sm font-bold text-blue-600 dark:text-blue-500">
+          <div className="hidden sm:flex flex-col justify-center">
+            <span className="text-[18px] lg:text-[22px] font-bold text-[#1e3a8a] dark:text-blue-400 leading-none mb-1">
               Vivekananda Global University
-            </p>
-            <p className="text-xs text-blue-500 dark:text-blue-400">
+            </span>
+            <span className="text-[18px] lg:text-[22px] font-bold text-[#1e3a8a] dark:text-blue-300 leading-none mb-1">
               IEEE Student Branch
-            </p>
+            </span>
           </div>
         </NavLink>
 
-        {/* DESKTOP MENU */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-5 lg:gap-8">
           <NavLink to="/" className={linkClass}>
             {({ isActive }) => (<>Home <Underline isActive={isActive} /></>)}
           </NavLink>
-          
+
           <NavLink to="/about" className={linkClass}>
             {({ isActive }) => (<>About <Underline isActive={isActive} /></>)}
           </NavLink>
@@ -82,31 +78,30 @@ export default function Navbar() {
             {({ isActive }) => (<>Chapters <Underline isActive={isActive} /></>)}
           </NavLink>
 
-          {/* DROPDOWN */}
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className={`flex items-center gap-1 text-sm font-bold transition-all group
-                ${theme === "dark" ? "text-gray-300 hover:text-white" : "text-blue-900 hover:text-blue-500"}`}
+              className={`relative py-2 flex items-center gap-1 text-[16px] lg:text-[17px] font-bold tracking-wide transition-all group
+                ${theme === "dark" ? "text-gray-300 hover:text-white" : "text-slate-800 hover:text-blue-700"}`}
             >
-              Activities 
-              <FiChevronDown className={`transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`} />
-              <span className={`absolute bottom-0 left-0 h-[2px] bg-blue-500 transition-all duration-300 ${dropdownOpen ? 'w-full' : 'w-0'}`}></span>
+              Activities
+              <FiChevronDown className={`ml-1 transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`} />
+              <span className={`absolute bottom-0 left-0 h-[3px] rounded-t-md bg-blue-600 dark:bg-blue-500 transition-all duration-300 ${dropdownOpen ? 'w-full' : 'w-0'}`}></span>
             </button>
 
             {dropdownOpen && (
               <div
-                className={`absolute top-12 left-0 w-48 rounded-xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300
+                className={`absolute top-12 left-0 w-56 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300
                   ${theme === "dark"
-                    ? "bg-[#0f172a] border border-white/10"
-                    : "bg-white border border-gray-100"}
+                    ? "bg-[#0f172a] border border-white/10 shadow-black/50"
+                    : "bg-white border border-gray-100 shadow-blue-900/10"}
                 `}
               >
-                <NavLink to="/events" onClick={() => setDropdownOpen(false)} className="block px-5 py-3 text-sm font-medium hover:bg-blue-500 hover:text-white transition-colors">
-                  Events
+                <NavLink to="/events" onClick={() => setDropdownOpen(false)} className="block px-6 py-3.5 text-base font-bold hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-blue-600 dark:hover:text-white transition-colors">
+                  Events & Workshops
                 </NavLink>
-                <NavLink to="/gallery" onClick={() => setDropdownOpen(false)} className="block px-5 py-3 text-sm font-medium hover:bg-blue-500 hover:text-white transition-colors">
-                  Gallery
+                <NavLink to="/gallery" onClick={() => setDropdownOpen(false)} className="block px-6 py-3.5 text-base font-bold hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-blue-600 dark:hover:text-white transition-colors">
+                  Photo Gallery
                 </NavLink>
               </div>
             )}
@@ -116,25 +111,23 @@ export default function Navbar() {
             {({ isActive }) => (<>Team <Underline isActive={isActive} /></>)}
           </NavLink>
 
-          {/* THEME TOGGLE */}
-          <button 
-            onClick={toggleTheme} 
-            className={`p-2 rounded-full transition-all duration-500 hover:rotate-12 active:scale-90
-              ${theme === "dark" 
-                ? "bg-white/10 text-yellow-400" 
-                : "bg-blue-50 text-blue-600 shadow-inner"}`}
+          <button
+            onClick={toggleTheme}
+            className={`p-2.5 rounded-full transition-all duration-500 hover:rotate-12 active:scale-90
+              ${theme === "dark"
+                ? "bg-white/10 text-yellow-400 hover:bg-white/20"
+                : "bg-slate-100 text-blue-600 shadow-inner hover:bg-slate-200"}`}
           >
-            {theme === "dark" ? <FiSun /> : <FiMoon />}
+            {theme === "dark" ? <FiSun size={20} /> : <FiMoon size={20} />}
           </button>
         </nav>
 
-        {/* MOBILE ICONS */}
         <div className="flex items-center gap-4 md:hidden">
-            <button onClick={toggleTheme} className="text-xl hover:rotate-12 transition-transform">
-               {theme === "dark" ? <FiSun className="text-yellow-400" /> : <FiMoon className="text-blue-600" />}
+            <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+               {theme === "dark" ? <FiSun className="text-yellow-400 text-2xl" /> : <FiMoon className="text-blue-600 text-2xl" />}
             </button>
             <button
-              className={`text-2xl transition-colors ${theme === "dark" ? "text-white" : "text-blue-800"}`}
+              className={`text-3xl transition-colors ${theme === "dark" ? "text-white" : "text-slate-800"}`}
               onClick={() => setMenuOpen(!menuOpen)}
             >
               {menuOpen ? <FiX /> : <FiMenu />}
@@ -142,19 +135,18 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* MOBILE MENU */}
       {menuOpen && (
         <div
-          className={`md:hidden px-6 py-8 space-y-4 border-t animate-in slide-in-from-right duration-500
+          className={`md:hidden px-6 py-8 space-y-3 border-t animate-in slide-in-from-top-4 duration-500 shadow-2xl
             ${theme === "dark" ? "bg-[#020617] border-white/10" : "bg-white border-gray-100"}
           `}
         >
           {["Home", "About", "Chapters", "Events", "Gallery", "Team"].map((item) => (
-            <NavLink 
+            <NavLink
               key={item}
-              onClick={() => setMenuOpen(false)} 
-              to={item === "Home" ? "/" : `/${item.toLowerCase()}`} 
-              className={({ isActive }) => `block text-lg font-bold p-2 rounded-lg transition-all ${isActive ? "bg-blue-500 text-white pl-4" : "text-gray-500"}`}
+              onClick={() => setMenuOpen(false)}
+              to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+              className={({ isActive }) => `block text-xl font-black tracking-wide p-3.5 rounded-xl transition-all ${isActive ? "bg-blue-600 text-white pl-5 shadow-md shadow-blue-500/20" : theme === "dark" ? "text-gray-400 hover:text-white" : "text-slate-600 hover:text-blue-700 hover:bg-slate-50"}`}
             >
               {item}
             </NavLink>

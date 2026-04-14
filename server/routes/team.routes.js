@@ -1,16 +1,17 @@
 import express from "express";
-import upload from "../middleware/upload.middleware.js";
-import { getTeam, addMember, deleteMember } from "../controllers/team.controller.js";
+import { getTeam, addMember, updateMember, deleteMember } from "../controllers/team.controller.js";
+import upload from "../middleware/upload.middleware.js"; 
 
-import { protect, adminOnly } from "../middleware/auth.middleware.js";
+// 🔥 YAHAN FIX KIYA HAI: Sahi file (adminAuth.middleware.js) aur sahi function (adminAuth) import kiya
+import { adminAuth } from "../middleware/adminAuth.middleware.js"; 
 
 const router = express.Router();
 
-// ✅ PUBLIC
 router.get("/", getTeam);
 
-// ✅ ADMIN ONLY
-router.post("/", protect, adminOnly, upload.single("photo"), addMember);
-router.delete("/:id", protect, adminOnly, deleteMember);
+// 🔥 YAHAN BHI FIX KIYA HAI: verifyAdmin ki jagah adminAuth laga diya
+router.post("/", adminAuth, upload.single("image"), addMember);
+router.put("/:id", adminAuth, upload.single("image"), updateMember);
+router.delete("/:id", adminAuth, deleteMember);
 
 export default router;

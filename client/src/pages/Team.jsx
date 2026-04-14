@@ -1,201 +1,182 @@
-import React from "react";
-import { FaLinkedin, FaEnvelope, FaPhoneAlt } from "react-icons/fa";
-
-import logo from "../assets/vgu-logo.png";
-import image001 from "../assets/image001.png";
-import image002 from "../assets/image002.png";
-import image003 from "../assets/image003.png";
-import image004 from "../assets/image004.png";
-import image005 from "../assets/image005.png";
-import image006 from "../assets/image006.png";
-import image1 from "../assets/image1.png";
-import image2 from "../assets/image2.png";
-import image3 from "../assets/image3.png";
-import image03 from "../assets/image.png";
-import image4 from "../assets/image4.png";
-import image5 from "../assets/image5.png";
-import image6 from "../assets/image6.png";
-import image7 from "../assets/image7.png";
-import image8 from "../assets/image8.png";
-import image9 from "../assets/image9.png";
-import image10 from "../assets/image10.png";
-import image11 from "../assets/image11.png";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { FiLinkedin, FiMail, FiPhone, FiUsers } from "react-icons/fi";
+import API from "../api";
+import Footer from "../components/Footer";
 
 export default function Team() {
+  const [team, setTeam] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const { data } = await API.get("/team");
+        setTeam(data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching team:", err);
+        setLoading(false);
+      }
+    };
+    fetchTeam();
+  }, []);
+
+  const advisors = team.filter((m) => m.category === "advisor");
+  const coreTeam = team.filter((m) => m.category === "core");
+  const supportive = team.filter((m) => m.category === "supportive");
+
+  // ================= REUSABLE MEMBER CARD =================
+  const MemberCard = ({ m, index }) => {
+    const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=eff6ff&color=1d4ed8&size=150&bold=true`;
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ delay: index * 0.1, duration: 0.5 }}
+        whileHover={{ y: -10 }}
+        className="relative group p-8 rounded-[2rem] bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 overflow-hidden text-center shadow-lg shadow-gray-200/50 dark:shadow-none"
+      >
+        {/* Hover Glow Effect */}
+        <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/0 via-blue-500/5 dark:via-blue-500/10 to-blue-500/0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500 pointer-events-none"></div>
+
+        <div className="relative z-10 flex flex-col items-center">
+          
+          {/* LinkedIn Icon (Top Right) */}
+          {m.linkedin && (
+            <a 
+              href={m.linkedin} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="absolute -top-2 -right-2 bg-blue-50 dark:bg-white/10 p-2.5 rounded-full shadow-sm hover:scale-110 hover:-translate-y-1 transition-all duration-300 hover:bg-blue-600 hover:text-white text-blue-600 dark:text-blue-400 group-hover:shadow-blue-500/30"
+              title="LinkedIn Profile"
+            >
+              <FiLinkedin className="text-lg" />
+            </a>
+          )}
+
+          {/* Member Image with Animated Ring */}
+          <div className="relative w-32 h-32 mx-auto mb-6">
+            <div className="absolute inset-0 rounded-full border-2 border-transparent group-hover:border-blue-500/50 dark:group-hover:border-blue-400/50 transition-colors duration-500 scale-105"></div>
+            <div className="w-full h-full rounded-full overflow-hidden ring-4 ring-slate-50 dark:ring-[#020617] shadow-inner bg-slate-100 dark:bg-white/5">
+              <img 
+                src={m.image && m.image.startsWith("http") ? m.image : avatarUrl} 
+                alt={m.name} 
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" 
+              />
+            </div>
+          </div>
+
+          {/* Name & Role */}
+          <h3 className="text-xl font-black text-slate-800 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            {m.name}
+          </h3>
+          <p className="text-sm font-bold text-blue-600 dark:text-indigo-400 mb-6 uppercase tracking-wider">
+            {m.role}
+          </p>
+
+          {/* Contact Info */}
+          <div className="w-full space-y-3 pt-5 border-t border-gray-100 dark:border-white/10">
+            {m.email && (
+              <a href={`mailto:${m.email}`} className="flex items-center justify-center gap-2.5 text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group/link truncate px-2">
+                <FiMail className="shrink-0 text-blue-500" />
+                <span className="truncate group-hover/link:underline decoration-blue-500/30 underline-offset-4">{m.email}</span>
+              </a>
+            )}
+            {m.phone && (
+              <a href={`tel:${m.phone}`} className="flex items-center justify-center gap-2.5 text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group/link">
+                <FiPhone className="shrink-0 text-blue-500" />
+                <span className="group-hover/link:underline decoration-blue-500/30 underline-offset-4">{m.phone}</span>
+              </a>
+            )}
+          </div>
+
+        </div>
+      </motion.div>
+    );
+  };
+
+  // ================= REUSABLE SECTION COMPONENT =================
+  const Section = ({ title, data }) => {
+    if (data.length === 0) return null;
+    return (
+      <div className="mb-24 lg:mb-32">
+        <div className="flex flex-col items-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-black text-slate-800 dark:text-white tracking-tight mb-4 text-center">
+            {title}
+          </h2>
+          <div className="h-1.5 w-24 bg-gradient-to-r from-blue-600 to-indigo-500 rounded-full"></div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-2">
+          {data.map((m, index) => (
+            <MemberCard key={m._id} m={m} index={index} />
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  // ================= LOADING STATE =================
+  if (loading) {
+    return (
+      <div className="min-h-screen pt-20 flex flex-col items-center justify-center bg-slate-50 dark:bg-[#020617] text-blue-600 dark:text-blue-400 transition-colors duration-500">
+        <div className="w-12 h-12 border-4 border-blue-200 dark:border-blue-900 border-t-blue-600 dark:border-t-blue-500 rounded-full animate-spin mb-4"></div>
+        <p className="font-bold tracking-widest uppercase text-sm">Loading Team...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen mt-10 pt-0 px-6 bg-white text-gray-900 dark:bg-[#020617] dark:text-white transition-colors duration-300">
+    <>
+      {/* 🔥 FIX: pt-32 हटाकर pt-10 lg:pt-16 किया ताकि अलाइनमेंट एकदम ऊपर से शुरू हो */}
+      <div className="relative min-h-screen pt-10 lg:pt-16 pb-20 px-6 bg-slate-50 dark:bg-[#020617] transition-colors duration-500 overflow-hidden">
+        
+        {/* BACKGROUND GLOWS (Dark Mode Only) */}
+        <div className="hidden dark:block absolute top-[-5%] left-[-5%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
+        <div className="hidden dark:block absolute bottom-[-5%] right-[-5%] w-[40%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
 
-      {/* ================= FACULTY ADVISORS ================= */}
-      <h2 className="text-4xl font-bold text-center mb-12 text-blue-800 dark:text-white">
-        Faculty Advisors
-      </h2>
+        <div className="relative z-10 max-w-7xl mx-auto">
+          
+          {/* ================= HEADER SECTION ================= */}
+          <header className="text-center mb-20 lg:mb-28">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-blue-100 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-400 text-sm font-bold tracking-widest uppercase mb-6 shadow-sm"
+            >
+              <FiUsers className="text-lg" /> The People Behind
+            </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-28">
-        {[
-          {
-            name: "Prof. (Dr.) Baldev Singh",
-            img: image001,
-            email: "baldev_singh@vgu.ac.in",
-            phone: "9785643441",
-            linkedin: "https://www.linkedin.com/in/dr-baldev-singh-77406b1a9/?originalSubdomain=in",
-          },
-          {
-            name: "Prof.(Dr.) Surendra Yadav",
-            img: image002,
-            email: "surendra.yadav@vgu.ac.in",
-            phone: "9982317251",
-            linkedin: "https://www.linkedin.com/in/prof-dr-surendra-yadav-944319a0/",
-          },
-          {
-            name: "Dr. Prashant Sharma",
-            img: image003,
-            email: "prashant.sharma@vgu.ac.in",
-            phone: "9784025875",
-            linkedin: "https://www.linkedin.com/in/dr-prashant-sharma-b9783618",
-          },
-          {
-            name: "Mayuri Katara (Assistant Professor)",
-            img: image004,
-            email: "mayuree.katara@vgu.ac.in",
-            phone: "9587087442",
-            linkedin: "https://www.linkedin.com/in/mayuri-katara-6850a0192/?originalSubdomain=in",
-          },
-          {
-            name: "Dr. Muquaddar Ali (Assistant Professor)",
-            img: image005,
-            email: "muquaddar.ali@vgu.ac.in",
-            phone: "99024238334",
-            linkedin: "https://www.linkedin.com/in/dr-muquaddar-ali/?originalSubdomain=in",
-          },
-          {
-            name: "Narayan Vyas (Assistant Professor)",
-            img: image006,
-            email: "narayan.vyas@vgu.ac.in",
-            phone: "8560014421",
-            linkedin: "https://www.linkedin.com/in/narayanvyas87/?originalSubdomain=in",
-          },
-        ].map((m, i) => (
-          <div key={i} className="relative bg-blue-50 dark:bg-white/5 border dark:border-white/10 rounded-2xl p-6 text-center hover:-translate-y-3 transition-all shadow-sm hover:shadow-xl">
+            <motion.h1
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-5xl md:text-7xl font-black mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-white dark:to-blue-400"
+            >
+              Meet Our Team
+            </motion.h1>
 
-            <a href={m.linkedin} target="_blank" rel="noopener noreferrer"
-              className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md hover:scale-110 transition">
-              <FaLinkedin className="text-[#0A66C2] text-xl" />
-            </a>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-lg md:text-xl text-slate-600 dark:text-gray-400 max-w-3xl mx-auto font-medium leading-relaxed"
+            >
+              The IEEE Student Branch at Vivekananda Global University is driven by a passionate group of students and faculty members dedicated to technological excellence and innovation.
+            </motion.p>
+          </header>
 
-            <div className="h-24 w-24 mx-auto rounded-full overflow-hidden mb-4 ring-4 ring-indigo-500/30">
-              <img src={m.img} className="w-full h-full object-cover" />
-            </div>
-
-            <h3 className="text-lg font-semibold">{m.name}</h3>
-            <p className="text-blue-600 dark:text-gray-400 mb-2">Advisor</p>
-
-            <div className="space-y-1 text-sm">
-              <div className="flex items-center justify-center gap-2">
-                <FaEnvelope className="text-blue-600 shrink-0" />
-                <a href={`mailto:${m.email}`} className="hover:underline">
-                  {m.email}
-                </a>
-              </div>
-              <div className="flex items-center justify-center gap-2">
-                <FaPhoneAlt className="text-blue-600 shrink-0" />
-                <a href={`tel:${m.phone}`} className="hover:underline">
-                  {m.phone}
-                </a>
-              </div>
-            </div>
-          </div>
-        ))}
+          {/* ================= TEAM SECTIONS ================= */}
+          <Section title="Faculty Advisors" data={advisors} />
+          <Section title="Core Team" data={coreTeam} />
+          <Section title="Supportive Members" data={supportive} />
+          
+        </div>
       </div>
-
-      {/* ================= OUR TEAM ================= */}
-      <h2 className="text-4xl font-bold text-center mb-12 text-blue-800 dark:text-white">
-        Our Team
-      </h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {[
-          { name: "Hemant Modi", role: "Chair", img: image1, email: "hemantmodi152003@gmail.com", phone: "9460500295", linkedin: "https://www.linkedin.com/in/hemant-modi24" },
-          { name: "Lakshya Sharma", role: "Vice Chair", img: image2, email: "lakshyasharma1316@gmail.com", phone: "8949411277", linkedin: "https://www.linkedin.com/in/lakshyasharma1316" },
-          { name: "Prasanta Pandey", role: "Treasurer", img: image3, email: "prasantapandey1607@gmail.com", phone: "7790922616", linkedin: "https://www.linkedin.com/in/prasantapandey16" },
-          { name: "Abhishek Kumar", role: "Technical Head", img: image03, email: "chaurasiyaabhi684@gmail.com", phone: "6200590137", linkedin: "https://www.linkedin.com/in/abhishek-chaurasiya-363883384" },
-          { name: "Manyata Sharma", role: "Secretary", img: image4, email: "manyatasharma576@gmail.com", phone: "9407281351", linkedin: "https://www.linkedin.com/in/manyata-sharma-318754286" },
-        ].map((m, i) => (
-          <div key={i} className="relative bg-blue-50 dark:bg-white/5 border dark:border-white/10 rounded-2xl p-6 text-center hover:-translate-y-3 transition shadow-sm hover:shadow-xl">
-
-            <a href={m.linkedin} className="absolute top-4 right-4 bg-white p-2 rounded-full shadow">
-              <FaLinkedin className="text-[#0A66C2]" />
-            </a>
-
-            <div className="h-24 w-24 mx-auto rounded-full overflow-hidden mb-4 ring-4 ring-indigo-500/30">
-              <img src={m.img} className="w-full h-full object-cover" />
-            </div>
-
-            <h3 className="font-semibold">{m.name}</h3>
-            <p className="text-blue-600 dark:text-gray-400 mb-2">{m.role}</p>
-
-            <div className="space-y-1 text-sm">
-              <div className="flex items-center justify-center gap-2">
-                <FaEnvelope className="text-blue-600 shrink-0" />
-                <a href={`mailto:${m.email}`} className="hover:underline">
-                  {m.email}
-                </a>
-              </div>
-              <div className="flex items-center justify-center gap-2">
-                <FaPhoneAlt className="text-blue-600 shrink-0" />
-                <a href={`tel:${m.phone}`} className="hover:underline">
-                  {m.phone}
-                </a>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* ================= SUPPORTIVE MEMBERS ================= */}
-      <h2 className="text-3xl font-bold text-center mt-32 mb-12 text-blue-800 dark:text-white">
-        Supportive Members
-      </h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto pb-24">
-        {[
-          { name: "Abhishek Prasad", img: image5, email: "abhishekprasad82528@gmail.com", phone: "7292846975", linkedin: "https://www.linkedin.com/in/abhishek-prasad-b8435b363" },
-          { name: "Anushka Thakur", img: image6, email: "anushkaaathakur@gmail.com", phone: "7277251151", linkedin: "https://www.linkedin.com/in/anushka-thakur-013781286" },
-          { name: "Jijo Vinod", img: image7, email: "vinodjijo12@gmail.com", phone: "8306202833", linkedin: "https://www.linkedin.com/in/jijov" },
-          { name: "Arman Hussain", img: image8, email: "armanhussain681@gmail.com", phone: "9057212878", linkedin: "https://www.linkedin.com/in/arman-husain-cse" },
-          { name: "Dishant Choudhary", img: image9, email: "dishantchoudhary1218@gmail.com ", phone: "8306443235", linkedin: "https://www.linkedin.com/in/dishant-choudhary" },
-          { name: "Ghanshyam Suthar", img: image10, email: "ghanshyamsuthar1289@gmail.com", phone: "9166270003", linkedin: "https://www.linkedin.com/in/ghanshyam-suthar-952ab0373" },
-          { name: "Shreeansh Ayush", img: image11, email: "@gmail.com", phone: "8809076286", linkedin: "https://www.linkedin.com/in/shreeansh-ayush-429452281" },
-        ].map((m, i) => (
-          <div key={i} className="relative bg-blue-50 dark:bg-white/5 border dark:border-white/10 rounded-2xl p-6 text-center hover:-translate-y-2 transition shadow-sm hover:shadow-xl">
-
-            <a href={m.linkedin} className="absolute top-4 right-4 bg-white p-2 rounded-full shadow">
-              <FaLinkedin className="text-[#0A66C2]" />
-            </a>
-
-            <div className="h-24 w-24 mx-auto rounded-full overflow-hidden mb-4 ring-4 ring-indigo-500/30">
-              <img src={m.img} className="w-full h-full object-cover" />
-            </div>
-
-            <h3 className="font-semibold">{m.name}</h3>
-
-            <div className="space-y-1 text-sm mt-2">
-              <div className="flex items-center justify-center gap-2">
-                <FaEnvelope className="text-blue-600 shrink-0" />
-                <a href={`mailto:${m.email}`} className="hover:underline">
-                  {m.email}
-                </a>
-              </div>
-              <div className="flex items-center justify-center gap-2">
-                <FaPhoneAlt className="text-blue-600 shrink-0" />
-                <a href={`tel:${m.phone}`} className="hover:underline">
-                  {m.phone}
-                </a>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-    </div>
+      <Footer />
+    </>
   );
 }

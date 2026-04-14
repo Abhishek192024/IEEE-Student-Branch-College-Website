@@ -1,58 +1,69 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaLinkedin, FaEnvelope, FaPhoneAlt } from "react-icons/fa";
-import { useNavigate } from "react-router-dom"; // 🔥 1. Yahan useNavigate import kiya
-
-// Images
-import image01 from "../assets/image001.png"; // Baldev Singh
-import image0 from "../assets/image003.png";  // Prashant Sharma
-import image03 from "../assets/image2.png";   // Lakshya Sharma
-import image5 from "../assets/image11.png";   // Shreeansh Ayush
+import { useNavigate } from "react-router-dom";
 
 export default function ComputerSociety() {
-  const navigate = useNavigate(); // 🔥 2. Yahan navigate banaya redirect karne ke liye
+  const navigate = useNavigate();
 
-  // ✅ EVENTS STATE (API se aayega)
   const [events, setEvents] = useState([]);
+  const [team, setTeam] = useState([]); // 🔥 Naya state team ke liye
 
-  // ✅ Fetch events from backend (Auto update every 5 sec)
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/events");
-        setEvents(res.data);
+        // 🔥 Ek sath dono APIs call kar li
+        const [eventsRes, teamRes] = await Promise.all([
+          axios.get("http://localhost:5000/api/events"),
+          axios.get("http://localhost:5000/api/team")
+        ]);
+        setEvents(eventsRes.data);
+        setTeam(teamRes.data);
       } catch (error) {
-        console.log("Events fetch error:", error);
+        console.log("Fetch error:", error);
       }
     };
 
-    fetchEvents(); // first time load
-
-    // 🔁 auto update every 5 sec
-    const interval = setInterval(fetchEvents, 5000);
-
+    fetchData(); 
+    const interval = setInterval(fetchData, 5000);
     return () => clearInterval(interval);
   }, []);
 
+  // 🔥 Naam se filter karenge
+  const csAdvisors = team.filter(m => ["Prof. (Dr.) Baldev Singh", "Dr. Prashant Sharma"].includes(m.name));
+  const csCoords = team.filter(m => ["Lakshya Sharma", "Shreeansh Ayush"].includes(m.name));
+
+  // 🔥 Reusable Card Component taaki code chhota rahe
+  const MemberCard = ({ m }) => {
+    const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=eff6ff&color=1d4ed8&size=150&bold=true`;
+    return (
+      <div className="relative group bg-blue-50 dark:bg-white/5 border dark:border-white/10 rounded-2xl p-8 text-center hover:-translate-y-3 transition-all shadow-sm hover:shadow-xl">
+        {m.linkedin && (
+          <a href={m.linkedin} target="_blank" rel="noopener noreferrer" className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md hover:scale-110 transition">
+            <FaLinkedin className="text-[#0A66C2] text-xl" />
+          </a>
+        )}
+        <div className="h-28 w-28 mx-auto rounded-full overflow-hidden mb-5 ring-4 ring-indigo-500/40 shadow-lg">
+          <img src={m.image && m.image.startsWith("http") ? m.image : avatarUrl} alt={m.name} className="w-full h-full object-cover" />
+        </div>
+        <h3 className="text-xl font-semibold">{m.name}</h3>
+        <p className="text-blue-600 dark:text-gray-400 mb-3">{m.role}</p>
+        <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+          {m.email && <p className="flex items-center justify-center gap-2"><FaEnvelope /> {m.email}</p>}
+          {m.phone && <p className="flex items-center justify-center gap-2"><FaPhoneAlt /> {m.phone}</p>}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen pt-10 px-6 bg-white text-gray-900 dark:bg-[#020617] dark:text-white transition-colors duration-300">
-
-      {/* ================= HEADER ================= */}
       <div className="text-center mb-20">
-        <h1 className="text-4xl md:text-5xl font-bold text-blue-800 dark:text-white mb-4">
-          IEEE – Computer Society
-        </h1>
-        <p className="max-w-3xl mx-auto text-blue-700/80 dark:text-gray-400">
-          Empowering students through innovation, leadership, research and
-          industry-ready technical excellence.
-        </p>
+        <h1 className="text-4xl md:text-5xl font-bold text-blue-800 dark:text-white mb-4">IEEE – Computer Society</h1>
+        <p className="max-w-3xl mx-auto text-blue-700/80 dark:text-gray-400">Empowering students through innovation, leadership, research and industry-ready technical excellence.</p>
       </div>
 
-      {/* ================= OBJECTIVE ================= */}
-      <h2 className="text-3xl font-bold text-center mb-14 text-blue-800 dark:text-white">
-        Objective of Chapter
-      </h2>
-
+      <h2 className="text-3xl font-bold text-center mb-14 text-blue-800 dark:text-white">Objective of Chapter</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-5xl mx-auto mb-28">
         {[
           { text: "Enhance knowledge through Conferences, Seminars, Tutorials & Workshops.", icon: "🎓" },
@@ -60,213 +71,51 @@ export default function ComputerSociety() {
           { text: "Enable interaction with academicians, researchers & experts.", icon: "🤝" },
           { text: "Connect students with industry professionals & career paths.", icon: "🚀" },
         ].map((obj, i) => (
-          <div
-            key={i}
-            className="group bg-blue-50 dark:bg-white/5 border dark:border-white/10 p-6 rounded-2xl flex gap-4 items-start hover:-translate-y-2 transition-all shadow-sm hover:shadow-xl"
-          >
+          <div key={i} className="group bg-blue-50 dark:bg-white/5 border dark:border-white/10 p-6 rounded-2xl flex gap-4 items-start hover:-translate-y-2 transition-all shadow-sm hover:shadow-xl">
             <div className="text-3xl">{obj.icon}</div>
-            <p className="text-blue-700/80 dark:text-gray-300 group-hover:text-blue-800 dark:group-hover:text-white transition">
-              {obj.text}
-            </p>
+            <p className="text-blue-700/80 dark:text-gray-300 group-hover:text-blue-800 dark:group-hover:text-white transition">{obj.text}</p>
           </div>
         ))}
       </div>
 
-      {/* ================= FACULTY ADVISORS ================= */}
-      <h2 className="text-3xl font-bold text-center mb-14 text-blue-800 dark:text-white">
-        Faculty Advisors
-      </h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-5xl mx-auto mb-28">
-        {[
-          {
-            name: "Prof. (Dr.) Baldev Singh",
-            role: "Faculty Advisor",
-            img: image01,
-            email: "baldev_singh@vgu.ac.in",
-            phone: "9785643441",
-            linkedin: "https://www.linkedin.com/in/dr-baldev-singh-77406b1a9/",
-          },
-          {
-            name: "Dr. Prashant Sharma",
-            role: "Faculty Advisor",
-            img: image0,
-            email: "prashant.sharma@vgu.ac.in",
-            phone: "9784025875",
-            linkedin: "https://www.linkedin.com/in/dr-prashant-sharma-b9783618",
-          },
-        ].map((m, i) => (
-          <div
-            key={i}
-            className="relative group bg-blue-50 dark:bg-white/5 border dark:border-white/10 rounded-2xl p-8 text-center hover:-translate-y-3 transition-all shadow-sm hover:shadow-xl"
-          >
-            <a
-              href={m.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md hover:scale-110 transition"
-            >
-              <FaLinkedin className="text-[#0A66C2] text-xl" />
-            </a>
-
-            <div className="h-28 w-28 mx-auto rounded-full overflow-hidden mb-5 ring-4 ring-indigo-500/40 shadow-lg">
-              <img src={m.img} alt={m.name} className="w-full h-full object-cover" />
-            </div>
-
-            <h3 className="text-xl font-semibold">{m.name}</h3>
-            <p className="text-blue-600 dark:text-gray-400 mb-3">{m.role}</p>
-
-            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-              <p className="flex items-center justify-center gap-2">
-                <FaEnvelope /> {m.email}
-              </p>
-              <p className="flex items-center justify-center gap-2">
-                <FaPhoneAlt /> {m.phone}
-              </p>
-            </div>
+      {csAdvisors.length > 0 && (
+        <>
+          <h2 className="text-3xl font-bold text-center mb-14 text-blue-800 dark:text-white">Faculty Advisors</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-5xl mx-auto mb-28">
+            {csAdvisors.map(m => <MemberCard key={m._id} m={m} />)}
           </div>
-        ))}
-      </div>
+        </>
+      )}
 
-      {/* ================= STUDENT COORDINATORS ================= */}
-      <h2 className="text-3xl font-bold text-center mb-14 text-blue-800 dark:text-white">
-        Student Coordinators
-      </h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-5xl mx-auto mb-28">
-        {[
-          {
-            name: "Lakshya Sharma",
-            role: "Student Coordinator",
-            img: image03,
-            email: "lakshyasharma1316@gmail.com",
-            phone: "8949411277",
-            linkedin: "https://www.linkedin.com/in/lakshyasharma1316",
-          },
-          {
-            name: "Shreeansh Ayush",
-            role: "Student Coordinator",
-            img: image5,
-            email: "shreeanshayush@gmail.com",
-            phone: "8809076286",
-            linkedin: "https://www.linkedin.com/in/shreeansh-ayush-429452281",
-          },
-        ].map((m, i) => (
-          <div
-            key={i}
-            className="relative group bg-blue-50 dark:bg-white/5 border dark:border-white/10 rounded-2xl p-8 text-center hover:-translate-y-3 transition-all shadow-sm hover:shadow-xl"
-          >
-            <a
-              href={m.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md hover:scale-110 transition"
-            >
-              <FaLinkedin className="text-[#0A66C2] text-xl" />
-            </a>
-
-            <div className="h-28 w-28 mx-auto rounded-full overflow-hidden mb-5 ring-4 ring-indigo-500/40 shadow-lg">
-              <img src={m.img} alt={m.name} className="w-full h-full object-cover" />
-            </div>
-
-            <h3 className="text-xl font-semibold">{m.name}</h3>
-            <p className="text-blue-600 dark:text-gray-400 mb-3">{m.role}</p>
-
-            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-              <p className="flex items-center justify-center gap-2">
-                <FaEnvelope /> {m.email}
-              </p>
-              <p className="flex items-center justify-center gap-2">
-                <FaPhoneAlt /> {m.phone}
-              </p>
-            </div>
+      {csCoords.length > 0 && (
+        <>
+          <h2 className="text-3xl font-bold text-center mb-14 text-blue-800 dark:text-white">Student Coordinators</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-5xl mx-auto mb-28">
+            {csCoords.map(m => <MemberCard key={m._id} m={m} />)}
           </div>
-        ))}
-      </div>
+        </>
+      )}
 
-      {/* ================= COMPUTER SOCIETY EVENTS ================= */}
-      <h2 className="text-3xl font-bold text-center mb-14 text-blue-800 dark:text-white">
-        Computer Society Events
-      </h2>
-
+      <h2 className="text-3xl font-bold text-center mb-14 text-blue-800 dark:text-white">Computer Society Events</h2>
       <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-28">
-        {events
-          .filter((e) => e.category === "computer")
-          .map((e) => {
+        {events.filter((e) => e.category === "computer").map((e) => {
             const styles = {
-              blue: {
-                card: "bg-blue-50 border-blue-100 dark:bg-white/5 dark:border-white/10",
-                title: "text-blue-700 dark:text-blue-400 group-hover:text-blue-500",
-                desc: "text-blue-700/70 dark:text-gray-400 group-hover:text-blue-700 dark:group-hover:text-gray-300",
-                tag: "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400 group-hover:bg-blue-500 group-hover:text-white",
-                shadow: "hover:shadow-[0_20px_50px_rgba(59,130,246,0.25)]",
-              },
-              purple: {
-                card: "bg-purple-50 border-purple-100 dark:bg-white/5 dark:border-white/10",
-                title: "text-purple-700 dark:text-purple-400 group-hover:text-purple-500",
-                desc: "text-purple-700/70 dark:text-gray-400 group-hover:text-purple-700 dark:group-hover:text-gray-300",
-                tag: "bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-400 group-hover:bg-purple-500 group-hover:text-white",
-                shadow: "hover:shadow-[0_20px_50px_rgba(168,85,247,0.25)]",
-              },
-              green: {
-                card: "bg-green-50 border-green-100 dark:bg-white/5 dark:border-white/10",
-                title: "text-green-700 dark:text-green-400 group-hover:text-green-500",
-                desc: "text-green-700/70 dark:text-gray-400 group-hover:text-green-700 dark:group-hover:text-gray-300",
-                tag: "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-400 group-hover:bg-green-500 group-hover:text-white",
-                shadow: "hover:shadow-[0_20px_50px_rgba(34,197,94,0.25)]",
-              },
-              rose: {
-                card: "bg-rose-50 border-rose-100 dark:bg-white/5 dark:border-white/10",
-                title: "text-rose-700 dark:text-rose-400 group-hover:text-rose-500",
-                desc: "text-rose-700/70 dark:text-gray-400 group-hover:text-rose-700 dark:group-hover:text-gray-300",
-                tag: "bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400 group-hover:bg-rose-500 group-hover:text-white",
-                shadow: "hover:shadow-[0_20px_50px_rgba(244,63,94,0.25)]",
-              },
-              emerald: {
-                card: "bg-emerald-50 border-emerald-100 dark:bg-white/5 dark:border-white/10",
-                title: "text-emerald-700 dark:text-emerald-400 group-hover:text-emerald-500",
-                desc: "text-emerald-700/70 dark:text-gray-400 group-hover:text-emerald-700 dark:group-hover:text-gray-300",
-                tag: "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white",
-                shadow: "hover:shadow-[0_20px_50px_rgba(16,185,129,0.25)]",
-              },
+              blue: { card: "bg-blue-50 border-blue-100 dark:bg-white/5 dark:border-white/10", title: "text-blue-700 dark:text-blue-400 group-hover:text-blue-500", desc: "text-blue-700/70 dark:text-gray-400 group-hover:text-blue-700 dark:group-hover:text-gray-300", tag: "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400 group-hover:bg-blue-500 group-hover:text-white", shadow: "hover:shadow-[0_20px_50px_rgba(59,130,246,0.25)]" },
+              purple: { card: "bg-purple-50 border-purple-100 dark:bg-white/5 dark:border-white/10", title: "text-purple-700 dark:text-purple-400 group-hover:text-purple-500", desc: "text-purple-700/70 dark:text-gray-400 group-hover:text-purple-700 dark:group-hover:text-gray-300", tag: "bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-400 group-hover:bg-purple-500 group-hover:text-white", shadow: "hover:shadow-[0_20px_50px_rgba(168,85,247,0.25)]" },
+              green: { card: "bg-green-50 border-green-100 dark:bg-white/5 dark:border-white/10", title: "text-green-700 dark:text-green-400 group-hover:text-green-500", desc: "text-green-700/70 dark:text-gray-400 group-hover:text-green-700 dark:group-hover:text-gray-300", tag: "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-400 group-hover:bg-green-500 group-hover:text-white", shadow: "hover:shadow-[0_20px_50px_rgba(34,197,94,0.25)]" },
+              rose: { card: "bg-rose-50 border-rose-100 dark:bg-white/5 dark:border-white/10", title: "text-rose-700 dark:text-rose-400 group-hover:text-rose-500", desc: "text-rose-700/70 dark:text-gray-400 group-hover:text-rose-700 dark:group-hover:text-gray-300", tag: "bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400 group-hover:bg-rose-500 group-hover:text-white", shadow: "hover:shadow-[0_20px_50px_rgba(244,63,94,0.25)]" },
+              emerald: { card: "bg-emerald-50 border-emerald-100 dark:bg-white/5 dark:border-white/10", title: "text-emerald-700 dark:text-emerald-400 group-hover:text-emerald-500", desc: "text-emerald-700/70 dark:text-gray-400 group-hover:text-emerald-700 dark:group-hover:text-gray-300", tag: "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white", shadow: "hover:shadow-[0_20px_50px_rgba(16,185,129,0.25)]" },
             };
-
             const c = styles[e.color] || styles.blue;
-
             return (
-              <div
-                key={e._id}
-                onClick={() => navigate(`/event/${e._id}`)} // 🔥 3. Yahan click event add kiya
-                className={`
-                  group rounded-xl p-6 cursor-pointer border
-                  transition-all duration-300 ease-out
-                  hover:-translate-y-3 hover:scale-[1.03]
-                  ${c.card}
-                  ${c.shadow}
-                `}
-              >
-                <h3 className={`text-xl font-semibold transition-all duration-300 ${c.title}`}>
-                  {e.title}
-                </h3>
-
-                <p className={`mt-2 transition-all duration-300 ${c.desc}`}>
-                  {e.description}
-                </p>
-
-                <span
-                  className={`
-                    inline-block mt-4 px-3 py-1 text-xs font-semibold rounded-full
-                    transition-all duration-300
-                    ${c.tag}
-                  `}
-                >
-                  {e.tag}
-                </span>
+              <div key={e._id} onClick={() => navigate(`/event/${e._id}`)} className={`group rounded-xl p-6 cursor-pointer border transition-all duration-300 ease-out hover:-translate-y-3 hover:scale-[1.03] ${c.card} ${c.shadow}`}>
+                <h3 className={`text-xl font-semibold transition-all duration-300 ${c.title}`}>{e.title}</h3>
+                <p className={`mt-2 transition-all duration-300 ${c.desc}`}>{e.description}</p>
+                <span className={`inline-block mt-4 px-3 py-1 text-xs font-semibold rounded-full transition-all duration-300 ${c.tag}`}>{e.tag}</span>
               </div>
             );
           })}
       </div>
-
     </div>
   );
 }

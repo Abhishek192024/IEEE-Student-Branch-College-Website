@@ -1,4 +1,5 @@
 import Gallery from "../models/Gallery.model.js";
+import imagekit from "../config/imagekit.js"; // 🔥 NAYA
 
 // GET all images
 export const getGallery = async (req, res) => {
@@ -8,18 +9,29 @@ export const getGallery = async (req, res) => {
 
 // UPLOAD
 export const uploadGallery = async (req, res) => {
-  const { title } = req.body;
+  try {
+    const { title } = req.body;
 
-  if (!req.file || !title) {
-    return res.status(400).json({ message: "Image & title required" });
+    if (!req.file || !title) {
+      return res.status(400).json({ message: "Image & title required" });
+    }
+
+    // ✅ ImageKit pe image upload karein
+    const uploadRes = await imagekit.upload({
+      file: req.file.buffer,
+      fileName: `gallery-${Date.now()}-${req.file.originalname}`,
+      folder: "/IEEE-VGU/Gallery"
+    });
+
+    const newImage = await Gallery.create({
+      image: uploadRes.url, // Cloud URL save karein
+      title
+    });
+
+    res.json(newImage);
+  } catch (error) {
+    res.status(500).json({ message: "Gallery upload failed", error });
   }
-
-  const newImage = await Gallery.create({
-    image: `/uploads/gallery/${req.file.filename}`,
-    title
-  });
-
-  res.json(newImage);
 };
 
 // DELETE
