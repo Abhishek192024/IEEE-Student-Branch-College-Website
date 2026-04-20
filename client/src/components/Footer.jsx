@@ -130,20 +130,14 @@ export default function Footer() {
             </a>
 
             {/* LinkedIn */}
-            <a href="https://linkedin.com/company/ieee-vgu" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-sm text-slate-600 dark:text-gray-400 hover:text-blue-700 dark:hover:text-blue-500 transition-colors font-medium group">
+            <a href="https://www.linkedin.com/in/vguieeestudentbranch" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-sm text-slate-600 dark:text-gray-400 hover:text-blue-700 dark:hover:text-blue-500 transition-colors font-medium group">
               <div className="w-8 h-8 rounded-full bg-blue-50 dark:bg-white/5 flex items-center justify-center text-slate-500 group-hover:text-blue-700 dark:group-hover:text-blue-500 group-hover:bg-blue-100 dark:group-hover:bg-blue-500/20 transition-colors">
                 <FiLinkedin />
               </div>
               IEEE VGU Branch
             </a>
 
-            {/* Facebook */}
-            <a href="https://facebook.com/ieeevgu" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-sm text-slate-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium group">
-              <div className="w-8 h-8 rounded-full bg-blue-50 dark:bg-white/5 flex items-center justify-center text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:bg-blue-100 dark:group-hover:bg-blue-500/20 transition-colors">
-                <FiFacebook />
-              </div>
-              IEEE VGU
-            </a>
+            
           </div>
 
           <a
